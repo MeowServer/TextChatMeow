@@ -1,0 +1,106 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E8C2EDC2-9322-4A23-AD7C-666D58C68E4B}|TextChatMeow\\TextChatMeow.csproj|C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\textchatmeow\\plugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8C2EDC2-9322-4A23-AD7C-666D58C68E4B}|TextChatMeow\\TextChatMeow.csproj|solutionrelative:textchatmeow\\plugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E8C2EDC2-9322-4A23-AD7C-666D58C68E4B}|TextChatMeow\\TextChatMeow.csproj|c:\\users\\fansh\\onedrive\\\u684C\u9762\\c#\u6D4B\u8BD5\\textchatmeow\\textchatmeow\\config.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8C2EDC2-9322-4A23-AD7C-666D58C68E4B}|TextChatMeow\\TextChatMeow.csproj|solutionrelative:textchatmeow\\config.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E8C2EDC2-9322-4A23-AD7C-666D58C68E4B}|TextChatMeow\\TextChatMeow.csproj|C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\textchatmeow\\commands.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8C2EDC2-9322-4A23-AD7C-666D58C68E4B}|TextChatMeow\\TextChatMeow.csproj|solutionrelative:textchatmeow\\commands.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E8C2EDC2-9322-4A23-AD7C-666D58C68E4B}|TextChatMeow\\TextChatMeow.csproj|C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\textchatmeow\\messageclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8C2EDC2-9322-4A23-AD7C-666D58C68E4B}|TextChatMeow\\TextChatMeow.csproj|solutionrelative:textchatmeow\\messageclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E8C2EDC2-9322-4A23-AD7C-666D58C68E4B}|TextChatMeow\\TextChatMeow.csproj|C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\textchatmeow\\packages.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{E8C2EDC2-9322-4A23-AD7C-666D58C68E4B}|TextChatMeow\\TextChatMeow.csproj|solutionrelative:textchatmeow\\packages.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MessageClass.cs",
+              "DocumentMoniker": "C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\TextChatMeow\\MessageClass.cs",
+              "RelativeDocumentMoniker": "TextChatMeow\\MessageClass.cs",
+              "ToolTip": "C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\TextChatMeow\\MessageClass.cs",
+              "RelativeToolTip": "TextChatMeow\\MessageClass.cs",
+              "ViewState": "AQIAAH4AAAAAAAAAAAAAAG4AAAAwAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T16:38:08.624Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Plugin.cs",
+              "DocumentMoniker": "C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\TextChatMeow\\Plugin.cs",
+              "RelativeDocumentMoniker": "TextChatMeow\\Plugin.cs",
+              "ToolTip": "C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\TextChatMeow\\Plugin.cs",
+              "RelativeToolTip": "TextChatMeow\\Plugin.cs",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAAAKUAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T05:17:16.856Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Commands.cs",
+              "DocumentMoniker": "C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\TextChatMeow\\Commands.cs",
+              "RelativeDocumentMoniker": "TextChatMeow\\Commands.cs",
+              "ToolTip": "C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\TextChatMeow\\Commands.cs",
+              "RelativeToolTip": "TextChatMeow\\Commands.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAKMAAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T05:15:18.062Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "packages.config",
+              "DocumentMoniker": "C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\TextChatMeow\\packages.config",
+              "RelativeDocumentMoniker": "TextChatMeow\\packages.config",
+              "ToolTip": "C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\TextChatMeow\\packages.config",
+              "RelativeToolTip": "TextChatMeow\\packages.config",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2024-03-22T18:17:10.742Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Config.cs",
+              "DocumentMoniker": "C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\TextChatMeow\\Config.cs",
+              "RelativeDocumentMoniker": "TextChatMeow\\Config.cs",
+              "ToolTip": "C:\\Users\\Fansh\\OneDrive\\\u684C\u9762\\C#\u6D4B\u8BD5\\TextChatMeow\\TextChatMeow\\Config.cs",
+              "RelativeToolTip": "TextChatMeow\\Config.cs",
+              "ViewState": "AQIAACQAAAAAAAAAAAAAAD8AAAAhAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-22T18:12:43.592Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
