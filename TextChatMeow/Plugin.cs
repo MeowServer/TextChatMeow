@@ -112,32 +112,25 @@ namespace TextChatMeow
     {
         public static List<MessageManager> messagesManagers = new List<MessageManager>();
 
-        private static CoroutineHandle AutoUpdateCoroutine;
+        private static CoroutineHandle AutoUpdateCoroutine = Timing.RunCoroutine(AutoUpdateMethod());
 
         private Player player;
-        private PlayerDisplay playerDisplay;
 
-        private HintServiceMeow.Hint TextChatTip;
-        private List<HintServiceMeow.Hint> MessageSlots;
+        private HintServiceMeow.Hint TextChatTip = new HintServiceMeow.Hint(580, HintAlignment.Left, TextChatMeow.instance.Config.ChatTip);
+        private List<HintServiceMeow.Hint> MessageSlots = new List<HintServiceMeow.Hint>()
+        {
+            new HintServiceMeow.Hint(600, HintAlignment.Left, ""),
+            new HintServiceMeow.Hint(620, HintAlignment.Left, ""),
+            new HintServiceMeow.Hint(640, HintAlignment.Left, ""),
+        };
 
         public MessageManager(PlayerDisplay playerDisplay)
         {
             this.player = playerDisplay.player;
-            //Set up hint
-            this.TextChatTip = new HintServiceMeow.Hint(600, HintAlignment.Left, TextChatMeow.instance.Config.ChatTip);
-            MessageSlots = new List<HintServiceMeow.Hint>()
-            {
-                new HintServiceMeow.Hint(620, HintAlignment.Left, ""),
-                new HintServiceMeow.Hint(640, HintAlignment.Left, ""),
-                new HintServiceMeow.Hint(660, HintAlignment.Left, ""),
-            };
 
             //Add hint onto player display
             playerDisplay.AddHint(TextChatTip);
-            foreach(var hint in MessageSlots)
-            {
-                playerDisplay.AddHint(hint);
-            }
+            playerDisplay.AddHints(MessageSlots);
 
             messagesManagers.Add(this);
         }
@@ -153,6 +146,11 @@ namespace TextChatMeow
 
             foreach(ChatMessage chatMessage in MessageList.messageList)
             {
+                if(chatMessage.TimeSent.TotalSeconds + 10 < Round.ElapsedTime.TotalSeconds)
+                {
+                    continue;
+                }
+
                 if(chatMessage.CheckPermissionToSeeMessage(this.player))
                 {
                     MessageSlots[index].message = chatMessage.message;
@@ -164,6 +162,7 @@ namespace TextChatMeow
                     }
                 }
             }
+
             //clear rest of the slots
             for(;index < MessageSlots.Count(); index++)
             {
@@ -176,6 +175,18 @@ namespace TextChatMeow
             foreach(var chatMessage in messagesManagers)
             {
                 chatMessage.UpdateMessage();
+            }
+        }
+
+        private static IEnumerator<float> AutoUpdateMethod()
+        {
+            while(true)
+            {
+                foreach(var messageManager in messagesManagers)
+                {
+                    messageManager.UpdateMessage();
+                }
+                yield return Timing.WaitForSeconds(1f);
             }
         }
     }

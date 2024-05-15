@@ -21,30 +21,32 @@ namespace TextChatMeow
 
     internal abstract class ChatMessage
     {
-        public abstract ChatMessageType Type { get; set; }
+        public TimeSpan TimeSent { get; set; }
 
-        protected abstract string SenderNickname { get; set; }
-        protected abstract RoleTypeId SenderRoleType { get; set; }
-        protected abstract Color SenderRoleColor { get; set; }
+        public abstract ChatMessageType Type { get; }
+
+        protected string SenderNickname { get; set; }
+        protected RoleTypeId SenderRoleType { get; set; }
+        protected Color SenderRoleColor { get; set; }
 
         public abstract string message { get; set; }
+
+        public ChatMessage()
+        {
+            TimeSent = Round.ElapsedTime;
+        }
 
         public abstract bool CheckPermissionToSeeMessage(Player receiver);
     }
 
     internal class SystemChatMessage : ChatMessage
     {
+        public override ChatMessageType Type { get; } = ChatMessageType.SystemsChat;
+
         private List<Player> receivers = new List<Player>();
-
-        public override ChatMessageType Type { get; set; }
-
-        protected override string SenderNickname { get; set; }//Not Used
-        protected override RoleTypeId SenderRoleType { get; set; }//Not Used
-        protected override Color SenderRoleColor { get; set; }//Not Used
 
         private string source;
         private Color sourceColor;
-
 
         private string _message;
         public override string message
@@ -104,13 +106,9 @@ namespace TextChatMeow
 
     internal class ProximityChatMessage : ChatMessage
     {
+        public override ChatMessageType Type { get; } = ChatMessageType.ProximityChat;
+
         private List<Player> receivers = new List<Player>();
-
-        public override ChatMessageType Type { get; set; }
-
-        protected override string SenderNickname { get; set; }
-        protected override RoleTypeId SenderRoleType { get; set; }
-        protected override Color SenderRoleColor { get; set; }
 
         private string _message;
         public override string message
@@ -189,11 +187,7 @@ namespace TextChatMeow
 
     internal class RadioChatMessage : ChatMessage
     {
-        public override ChatMessageType Type { get; set; }
-
-        protected override string SenderNickname { get; set; }
-        protected override RoleTypeId SenderRoleType { get; set; }
-        protected override Color SenderRoleColor { get; set; }
+        public override ChatMessageType Type { get; } = ChatMessageType.RadioChat;
 
         private string _message;
         public override string message
@@ -240,14 +234,10 @@ namespace TextChatMeow
 
     internal class PublicChatMessage : ChatMessage
     {
-        public override ChatMessageType Type { get; set; }
+        public override ChatMessageType Type { get; } = ChatMessageType.PublicChat;
 
         private bool sendFromDead;
         private bool sendFromSCP;
-
-        protected override string SenderNickname { get; set; }
-        protected override RoleTypeId SenderRoleType { get; set; }
-        protected override Color SenderRoleColor { get; set; }
 
         private string _message;
         public override string message
@@ -297,13 +287,9 @@ namespace TextChatMeow
 
     internal class TeamChatMessage : ChatMessage
     {
-        public override ChatMessageType Type { get; set; }
+        public override ChatMessageType Type { get; } = ChatMessageType.TeamChat;
 
         private Team senderTeam;
-
-        protected override string SenderNickname { get; set; }
-        protected override RoleTypeId SenderRoleType { get; set; }
-        protected override Color SenderRoleColor { get; set; }
 
         private string _message;
         public override string message
@@ -329,8 +315,6 @@ namespace TextChatMeow
 
         public TeamChatMessage(string message, Player sender)
         {
-            Type = ChatMessageType.TeamChat;
-
             senderTeam = sender.Role.Team;
 
             SenderNickname = sender.Nickname;

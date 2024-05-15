@@ -1,7 +1,6 @@
 C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\bin\Debug\TextChatMeow.dll
 C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\bin\Debug\TextChatMeow.pdb
 C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\bin\Debug\Assembly-CSharp-firstpass.dll
-C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\bin\Debug\Assembly-CSharp.dll
 C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\bin\Debug\BouncyCastle.Cryptography.dll
 C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\bin\Debug\Caress.dll
 C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\bin\Debug\CommandSystem.Core.dll
@@ -113,3 +112,6 @@ C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\obj\Debug\Text
 C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\obj\Debug\TextChatMeow.dll
 C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\obj\Debug\TextChatMeow.pdb
 C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\obj\Debug\TextChat.F5E62D01.Up2Date
+C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\bin\Debug\0Harmony.dll
+C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\bin\Debug\0Harmony.pdb
+C:\Users\Fansh\OneDrive\桌面\C#测试\TextChatMeow\TextChatMeow\bin\Debug\0Harmony.xml

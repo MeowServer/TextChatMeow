@@ -38,7 +38,7 @@
       <HintPath>..\..\SCPSL插件依赖\Dev\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\SCPSL插件依赖\Dev\Assembly-CSharp-Publicized.dll</HintPath>
+      <HintPath>..\..\HintServiceMeow\HintServiceMeow\bin\Debug\Assembly-CSharp-Publicized.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="BouncyCastle.Cryptography">
