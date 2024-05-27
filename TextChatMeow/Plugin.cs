@@ -89,12 +89,12 @@ namespace TextChatMeow
             messageList.Insert(0, ms);
             MessageManager.UpdateAllMessage();
 
-            LogWritterMeow.Logger.Info(ms.message);
+            LogWritterMeow.Logger.Info(ms.text);
         }
 
         public static void RemoveMessage(string message)
         {
-            messageList.RemoveAll(x => x.message == message);
+            messageList.RemoveAll(x => x.text == message);
         }
 
         public static void ClearMessageList(EndingRoundEventArgs ev)
@@ -116,6 +116,8 @@ namespace TextChatMeow
 
         private Player player;
 
+        private TimeSpan timeCreated;
+
         private HintServiceMeow.Hint TextChatTip = new HintServiceMeow.Hint(580, HintAlignment.Left, TextChatMeow.instance.Config.ChatTip);
         private List<HintServiceMeow.Hint> MessageSlots = new List<HintServiceMeow.Hint>()
         {
@@ -132,6 +134,8 @@ namespace TextChatMeow
             playerDisplay.AddHint(TextChatTip);
             playerDisplay.AddHints(MessageSlots);
 
+            timeCreated = Round.ElapsedTime;
+
             messagesManagers.Add(this);
         }
 
@@ -144,29 +148,36 @@ namespace TextChatMeow
         {
             int index = 0;
 
-            foreach(ChatMessage chatMessage in MessageList.messageList)
+            foreach(var hint in MessageSlots)
             {
-                if(chatMessage.TimeSent.TotalSeconds + 10 < Round.ElapsedTime.TotalSeconds)
-                {
-                    continue;
-                }
+                hint.hide = true;
+            }
 
-                if(chatMessage.CheckPermissionToSeeMessage(this.player))
-                {
-                    MessageSlots[index].message = chatMessage.message;
+            IEnumerable<string> displayableMessages = 
+                from ChatMessage message in MessageList.messageList
+                where message.CanSee(this.player)
+                where message.TimeSent + TimeSpan.FromSeconds(10) > Round.ElapsedTime
+                select message.text;
 
-                    index++;
-                    if(index >= MessageSlots.Count())
-                    {
-                        break;
-                    }
+            foreach(string text in displayableMessages)
+            {
+                MessageSlots[index].message = text;
+                MessageSlots[index].hide = false;
+
+                index++;
+                if(index >= MessageSlots.Count())
+                {
+                    break;
                 }
             }
 
-            //clear rest of the slots
-            for(;index < MessageSlots.Count(); index++)
+            if (MessageSlots.Any(x => !x.hide) || Round.ElapsedTime - timeCreated <= TimeSpan.FromSeconds(10))
             {
-                MessageSlots[index].message = "";
+                TextChatTip.hide = false;
+            }
+            else
+            {
+                TextChatTip.hide = true;
             }
         }
 
@@ -186,6 +197,7 @@ namespace TextChatMeow
                 {
                     messageManager.UpdateMessage();
                 }
+
                 yield return Timing.WaitForSeconds(1f);
             }
         }

@@ -29,14 +29,14 @@ namespace TextChatMeow
         protected RoleTypeId SenderRoleType { get; set; }
         protected Color SenderRoleColor { get; set; }
 
-        public abstract string message { get; set; }
+        public abstract string text { get; set; }
 
         public ChatMessage()
         {
             TimeSent = Round.ElapsedTime;
         }
 
-        public abstract bool CheckPermissionToSeeMessage(Player receiver);
+        public abstract bool CanSee(Player receiver);
     }
 
     internal class SystemChatMessage : ChatMessage
@@ -49,7 +49,7 @@ namespace TextChatMeow
         private Color sourceColor;
 
         private string _message;
-        public override string message
+        public override string text
         {
             get
             {
@@ -71,11 +71,9 @@ namespace TextChatMeow
 
         public SystemChatMessage(string message, string source, List<Player> targets)
         {
-            Type = ChatMessageType.SystemsChat;
-
             this.source = source;
 
-            this.message = message;
+            this.text = message;
 
             this.sourceColor = TextChatMeow.instance.Config.ChannelsColor[Type];
 
@@ -84,18 +82,16 @@ namespace TextChatMeow
 
         public SystemChatMessage(string message, string source, List<Player> targets, Color color)
         {
-            Type = ChatMessageType.SystemsChat;
-
             this.source = source;
 
-            this.message = message;
+            this.text = message;
 
             receivers = new List<Player>(targets);
 
             this.sourceColor = color;
         }
 
-        public override bool CheckPermissionToSeeMessage(Player receiver)
+        public override bool CanSee(Player receiver)
         {
             if (receiver == null) return false;
             if (receivers.Contains(receiver)) return true;
@@ -111,7 +107,7 @@ namespace TextChatMeow
         private List<Player> receivers = new List<Player>();
 
         private string _message;
-        public override string message
+        public override string text
         {
             get
             {
@@ -167,16 +163,14 @@ namespace TextChatMeow
 
             }
 
-            Type = ChatMessageType.ProximityChat;
-
             SenderNickname = sender.Nickname;
             SenderRoleType = sender.Role.Type;
             SenderRoleColor = sender.Role.Color;
 
-            this.message = message;
+            this.text = message;
         }
 
-        public override bool CheckPermissionToSeeMessage(Player receiver)
+        public override bool CanSee(Player receiver)
         {
             if (receiver == null) return false;
             if (receivers.Contains(receiver)) return true;
@@ -190,7 +184,7 @@ namespace TextChatMeow
         public override ChatMessageType Type { get; } = ChatMessageType.RadioChat;
 
         private string _message;
-        public override string message
+        public override string text
         {
             get
             {
@@ -213,16 +207,14 @@ namespace TextChatMeow
 
         public RadioChatMessage(string message, Player sender)
         {
-            Type = ChatMessageType.RadioChat;
-
             SenderNickname = sender.Nickname;
             SenderRoleType = sender.Role.Type;
             SenderRoleColor = sender.Role.Color;
 
-            this.message = message;
+            this.text = message;
         }
 
-        public override bool CheckPermissionToSeeMessage(Player receiver)
+        public override bool CanSee(Player receiver)
         {
             if (receiver == null) return false;
             if (!receiver.HasItem(ItemType.Radio)) return false;
@@ -240,7 +232,7 @@ namespace TextChatMeow
         private bool sendFromSCP;
 
         private string _message;
-        public override string message
+        public override string text
         {
             get
             {
@@ -263,8 +255,6 @@ namespace TextChatMeow
 
         public PublicChatMessage(string message, Player sender)
         {
-            Type = ChatMessageType.PublicChat;
-
             sendFromDead = sender.IsDead;
             sendFromSCP = sender.IsScp;
 
@@ -272,10 +262,10 @@ namespace TextChatMeow
             SenderRoleType = sender.Role.Type;
             SenderRoleColor = sender.Role.Color;
 
-            this.message = message;
+            this.text = message;
         }
 
-        public override bool CheckPermissionToSeeMessage(Player receiver)
+        public override bool CanSee(Player receiver)
         {
             if (receiver == null) return false;
             if (sendFromDead != receiver.IsDead && !TextChatMeow.instance.Config.AllowSpectatorsChatWithPublic) return false;
@@ -292,7 +282,7 @@ namespace TextChatMeow
         private Team senderTeam;
 
         private string _message;
-        public override string message
+        public override string text
         {
             get
             {
@@ -321,10 +311,10 @@ namespace TextChatMeow
             SenderRoleType = sender.Role.Type;
             SenderRoleColor = sender.Role.Color;
 
-            this.message = message;
+            this.text = message;
         }
 
-        public override bool CheckPermissionToSeeMessage(Player receiver)
+        public override bool CanSee(Player receiver)
         {
             if (receiver == null) return false;
             if (receiver.Role.Team == senderTeam) return true;
