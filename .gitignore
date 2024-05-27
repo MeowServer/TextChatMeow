@@ -3,7 +3,9 @@ obj
 Properties
 HintServiceMeow.csproj
 packages.config
-.gitattributes
+.vs
+packages
+*.sln
 
 # Files built by Visual Studio
 *_i.c
