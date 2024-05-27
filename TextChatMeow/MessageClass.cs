@@ -54,8 +54,8 @@ namespace TextChatMeow
             get
             {
                 var str = "<b><color={colorOfChannel}>[{Channel}]</color><color={colorOfRole}>[{role}]</color></b>"
-                    .Replace("{colorOfChannel}", TextChatMeow.instance.Config.ChannelsColor[Type].ToHex())
-                    .Replace("{Channel}", TextChatMeow.instance.Config.ChannelsName[Type])
+                    .Replace("{colorOfChannel}", Plugin.instance.Config.ChannelsColor[Type].ToHex())
+                    .Replace("{Channel}", Plugin.instance.Config.ChannelsName[Type])
                     .Replace("{role}", source)
                     .Replace("{colorOfRole}", sourceColor.ToHex());
 
@@ -75,7 +75,7 @@ namespace TextChatMeow
 
             this.text = message;
 
-            this.sourceColor = TextChatMeow.instance.Config.ChannelsColor[Type];
+            this.sourceColor = Plugin.instance.Config.ChannelsColor[Type];
 
             receivers = new List<Player>(targets);
         }
@@ -113,9 +113,9 @@ namespace TextChatMeow
             {
                 var str = "{PlayerNickName}: <b><color={colorOfChannel}>[{Channel}]</color><color={colorOfRole}>[{role}]</color></b>"
                     .Replace("{PlayerNickName}", SenderNickname)
-                    .Replace("{colorOfChannel}", TextChatMeow.instance.Config.ChannelsColor[Type].ToHex())
-                    .Replace("{Channel}", TextChatMeow.instance.Config.ChannelsName[Type])
-                    .Replace("{role}", TextChatMeow.instance.Config.RoleName[SenderRoleType])
+                    .Replace("{colorOfChannel}", Plugin.instance.Config.ChannelsColor[Type].ToHex())
+                    .Replace("{Channel}", Plugin.instance.Config.ChannelsName[Type])
+                    .Replace("{role}", Plugin.instance.Config.RoleName[SenderRoleType])
                     .Replace("{colorOfRole}", SenderRoleColor.ToHex());
 
                 str += _message;
@@ -140,7 +140,7 @@ namespace TextChatMeow
                     continue;
                 }
 
-                if (!TextChatMeow.instance.Config.SCPAndHumanProximityChat)
+                if (!Plugin.instance.Config.SCPAndHumanProximityChat)
                 {
                     if (sender.Role.Team == Team.SCPs && player.Role.Team != Team.SCPs)
                     {
@@ -156,7 +156,7 @@ namespace TextChatMeow
                 }
 
                 var distance = Vector3.Distance(player.Position, sender.Position);
-                if (distance <= TextChatMeow.instance.Config.ProximityChatDistance)
+                if (distance <= Plugin.instance.Config.ProximityChatDistance)
                 {
                     receivers.Add(player);
                 }
@@ -190,9 +190,9 @@ namespace TextChatMeow
             {
                 var str = "{PlayerNickName}: <b><color={colorOfChannel}>[{Channel}]</color><color={colorOfRole}>[{role}]</color></b>"
                     .Replace("{PlayerNickName}", SenderNickname)
-                    .Replace("{colorOfChannel}", TextChatMeow.instance.Config.ChannelsColor[Type].ToHex())
-                    .Replace("{Channel}", TextChatMeow.instance.Config.ChannelsName[Type])
-                    .Replace("{role}", TextChatMeow.instance.Config.RoleName[SenderRoleType])
+                    .Replace("{colorOfChannel}", Plugin.instance.Config.ChannelsColor[Type].ToHex())
+                    .Replace("{Channel}", Plugin.instance.Config.ChannelsName[Type])
+                    .Replace("{role}", Plugin.instance.Config.RoleName[SenderRoleType])
                     .Replace("{colorOfRole}", SenderRoleColor.ToHex());
 
                 str += _message;
@@ -238,9 +238,9 @@ namespace TextChatMeow
             {
                 var str = "{PlayerNickName}: <b><color={colorOfChannel}>[{Channel}]</color><color={colorOfRole}>[{role}]</color></b>"
                     .Replace("{PlayerNickName}", SenderNickname)
-                    .Replace("{colorOfChannel}", TextChatMeow.instance.Config.ChannelsColor[Type].ToHex())
-                    .Replace("{Channel}", TextChatMeow.instance.Config.ChannelsName[Type])
-                    .Replace("{role}", TextChatMeow.instance.Config.RoleName[SenderRoleType])
+                    .Replace("{colorOfChannel}", Plugin.instance.Config.ChannelsColor[Type].ToHex())
+                    .Replace("{Channel}", Plugin.instance.Config.ChannelsName[Type])
+                    .Replace("{role}", Plugin.instance.Config.RoleName[SenderRoleType])
                     .Replace("{colorOfRole}", SenderRoleColor.ToHex());
 
                 str += _message;
@@ -268,8 +268,8 @@ namespace TextChatMeow
         public override bool CanSee(Player receiver)
         {
             if (receiver == null) return false;
-            if (sendFromDead != receiver.IsDead && !TextChatMeow.instance.Config.AllowSpectatorsChatWithPublic) return false;
-            if (sendFromSCP != receiver.IsScp && !TextChatMeow.instance.Config.SCPAndHumanPublicChat) return false;
+            if (sendFromDead != receiver.IsDead && !Plugin.instance.Config.AllowSpectatorsChatWithPublic) return false;
+            if (sendFromSCP != receiver.IsScp && !Plugin.instance.Config.SCPAndHumanPublicChat) return false;
 
             return true;
         }
@@ -288,9 +288,9 @@ namespace TextChatMeow
             {
                 var str = "{PlayerNickName}: <b><color={colorOfChannel}>[{Channel}]</color><color={colorOfRole}>[{role}]</color></b>"
                     .Replace("{PlayerNickName}", SenderNickname)
-                    .Replace("{colorOfChannel}", TextChatMeow.instance.Config.ChannelsColor[Type].ToHex())
-                    .Replace("{Channel}", TextChatMeow.instance.Config.ChannelsName[Type])
-                    .Replace("{role}", TextChatMeow.instance.Config.RoleName[SenderRoleType])
+                    .Replace("{colorOfChannel}", Plugin.instance.Config.ChannelsColor[Type].ToHex())
+                    .Replace("{Channel}", Plugin.instance.Config.ChannelsName[Type])
+                    .Replace("{role}", Plugin.instance.Config.RoleName[SenderRoleType])
                     .Replace("{colorOfRole}", SenderRoleColor.ToHex());
 
                 str += _message;

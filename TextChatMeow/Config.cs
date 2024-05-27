@@ -19,6 +19,11 @@ namespace TextChatMeow
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
 
+        [Description("How long should the tip display before it disappears?")]
+        public int TipDisplayTime { get; set; } = 20;
+        [Description("How long should a message display before it disappears?")]
+        public int MessagesHideTime { get; set; } = 20;
+
         [Description("Proximity Chat Config\nAllow proximity chat?")]
         public bool AllowProximityChat { get; set; } = true;
         [Description("How far should the message goes?")]

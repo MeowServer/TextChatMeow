@@ -14,9 +14,9 @@ using UnityEngine;
 
 namespace TextChatMeow
 {
-    internal class TextChatMeow : Plugin<Config>
+    internal class Plugin : Plugin<Config>
     {
-        public static TextChatMeow instance { get; set; }
+        public static Plugin instance { get; set; }
 
         public override string Name => "Text Chat Meow";
         public override string Author => "MeowServerOwner";
@@ -27,12 +27,12 @@ namespace TextChatMeow
             HintServiceMeow.EventHandler.NewPlayer += CreateNewMessageManager;
             Exiled.Events.Handlers.Player.Left += DeleteMessageManager;
 
-            Exiled.Events.Handlers.Server.RestartingRound += MessageList.ClearMessageList;
-            Exiled.Events.Handlers.Server.EndingRound += MessageList.ClearMessageList;
+            Exiled.Events.Handlers.Server.RestartingRound += MessagePool.ClearMessageList;
+            Exiled.Events.Handlers.Server.EndingRound += MessagePool.ClearMessageList;
 
-            Exiled.Events.Handlers.Player.ItemAdded += MessageList.UpdateMessageList;
-            Exiled.Events.Handlers.Player.ItemRemoved += MessageList.UpdateMessageList;
-            Exiled.Events.Handlers.Player.ChangingRole += MessageList.UpdateMessageList;
+            Exiled.Events.Handlers.Player.ItemAdded += MessagePool.UpdateMessageList;
+            Exiled.Events.Handlers.Player.ItemRemoved += MessagePool.UpdateMessageList;
+            Exiled.Events.Handlers.Player.ChangingRole += MessagePool.UpdateMessageList;
 
             base.OnEnabled();
             instance = this;
@@ -43,12 +43,12 @@ namespace TextChatMeow
             HintServiceMeow.EventHandler.NewPlayer -= CreateNewMessageManager;
             Exiled.Events.Handlers.Player.Left -= DeleteMessageManager;
 
-            Exiled.Events.Handlers.Server.RestartingRound -= MessageList.ClearMessageList;
-            Exiled.Events.Handlers.Server.EndingRound -= MessageList.ClearMessageList;
+            Exiled.Events.Handlers.Server.RestartingRound -= MessagePool.ClearMessageList;
+            Exiled.Events.Handlers.Server.EndingRound -= MessagePool.ClearMessageList;
 
-            Exiled.Events.Handlers.Player.ItemAdded -= MessageList.UpdateMessageList;
-            Exiled.Events.Handlers.Player.ItemRemoved -= MessageList.UpdateMessageList;
-            Exiled.Events.Handlers.Player.ChangingRole -= MessageList.UpdateMessageList;
+            Exiled.Events.Handlers.Player.ItemAdded -= MessagePool.UpdateMessageList;
+            Exiled.Events.Handlers.Player.ItemRemoved -= MessagePool.UpdateMessageList;
+            Exiled.Events.Handlers.Player.ChangingRole -= MessagePool.UpdateMessageList;
 
             base.OnDisabled();
             instance = null;
@@ -65,7 +65,7 @@ namespace TextChatMeow
         }
     }
 
-    internal static class MessageList
+    internal class MessagePool
     {
         public static List<ChatMessage> messageList = new List<ChatMessage>();
 
@@ -118,7 +118,7 @@ namespace TextChatMeow
 
         private TimeSpan timeCreated;
 
-        private HintServiceMeow.Hint TextChatTip = new HintServiceMeow.Hint(580, HintAlignment.Left, TextChatMeow.instance.Config.ChatTip);
+        private HintServiceMeow.Hint TextChatTip = new HintServiceMeow.Hint(580, HintAlignment.Left, Plugin.instance.Config.ChatTip);
         private List<HintServiceMeow.Hint> MessageSlots = new List<HintServiceMeow.Hint>()
         {
             new HintServiceMeow.Hint(600, HintAlignment.Left, ""),
@@ -146,20 +146,22 @@ namespace TextChatMeow
 
         public void UpdateMessage()
         {
-            int index = 0;
-
             foreach(var hint in MessageSlots)
             {
                 hint.hide = true;
             }
 
+            TimeSpan messageTimeToDisplay = TimeSpan.FromSeconds(Plugin.instance.Config.MessagesHideTime);
+
             IEnumerable<string> displayableMessages = 
-                from ChatMessage message in MessageList.messageList
+                from ChatMessage message in MessagePool.messageList
+                where message.TimeSent + messageTimeToDisplay > Round.ElapsedTime
                 where message.CanSee(this.player)
-                where message.TimeSent + TimeSpan.FromSeconds(10) > Round.ElapsedTime
                 select message.text;
 
-            foreach(string text in displayableMessages)
+            int index = 0; 
+
+            foreach (string text in displayableMessages)
             {
                 MessageSlots[index].message = text;
                 MessageSlots[index].hide = false;
@@ -171,7 +173,9 @@ namespace TextChatMeow
                 }
             }
 
-            if (MessageSlots.Any(x => !x.hide) || Round.ElapsedTime - timeCreated <= TimeSpan.FromSeconds(10))
+            TimeSpan tipTimeToDisplay = TimeSpan.FromSeconds(Plugin.instance.Config.TipDisplayTime);
+
+            if (MessageSlots.Any(x => !x.hide) || timeCreated + tipTimeToDisplay >= Round.ElapsedTime)
             {
                 TextChatTip.hide = false;
             }
@@ -208,13 +212,13 @@ namespace TextChatMeow
         public static void SendMessage(string message, string source, List<Player> targets)
         {
             var ms = new SystemChatMessage(message, source, targets);
-            MessageList.AddMessage(ms);
+            MessagePool.AddMessage(ms);
         }
 
         public static void SendMessage(string message, string source, List<Player> targets, Color color)
         {
             var ms = new SystemChatMessage(message, source, targets, color);
-            MessageList.AddMessage(ms);
+            MessagePool.AddMessage(ms);
         }
     }
 }

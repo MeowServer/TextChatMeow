@@ -27,7 +27,7 @@ namespace TextChatMeow
         {
             var player = Player.Get(sender);
 
-            if (!TextChatMeow.instance.Config.AllowProximityChat)
+            if (!Plugin.instance.Config.AllowProximityChat)
             {
                 response = "此频道已被禁用";
                 return false;
@@ -42,7 +42,7 @@ namespace TextChatMeow
             var str = string.Join(" ", arguments.ToArray());
             var message = new ProximityChatMessage(str, player);
 
-            MessageList.AddMessage(message);
+            MessagePool.AddMessage(message);
 
             response = $"您的消息已被发送至周围玩家：{str}";
             return true;
@@ -62,7 +62,7 @@ namespace TextChatMeow
         {
             var player = Player.Get(sender);
 
-            if (!TextChatMeow.instance.Config.AllowRadioChat)
+            if (!Plugin.instance.Config.AllowRadioChat)
             {
                 response = "此频道已被禁用";
                 return false;
@@ -91,7 +91,7 @@ namespace TextChatMeow
             var str = string.Join(" ", arguments.ToArray());
             var message = new RadioChatMessage(str, player);
 
-            MessageList.AddMessage(message);
+            MessagePool.AddMessage(message);
 
             response = $"您的消息已通过无线电发送：{str}";
             return true;
@@ -111,7 +111,7 @@ namespace TextChatMeow
         {
             var player = Player.Get(sender);
 
-            if (!TextChatMeow.instance.Config.AllowPublicChat)
+            if (!Plugin.instance.Config.AllowPublicChat)
             {
                 response = "此频道已被禁用";
                 return false;
@@ -126,7 +126,7 @@ namespace TextChatMeow
             var str = string.Join(" ", arguments.ToArray());
             var message = new PublicChatMessage(str, player);
 
-            MessageList.AddMessage(message);
+            MessagePool.AddMessage(message);
 
             response = $"您的消息已被发送至所有玩家：{str}";
             return true;
@@ -146,7 +146,7 @@ namespace TextChatMeow
         {
             var player = Player.Get(sender);
 
-            if (!TextChatMeow.instance.Config.AllowTeamChat)
+            if (!Plugin.instance.Config.AllowTeamChat)
             {
                 response = "此频道已被禁用";
                 return false;
@@ -161,7 +161,7 @@ namespace TextChatMeow
             var str = string.Join(" ", arguments.ToArray());
             var message = new TeamChatMessage(str, player);
 
-            MessageList.AddMessage(message);
+            MessagePool.AddMessage(message);
 
             response = $"您的消息已被发送至同队伍的玩家：{str}";
             return true;
