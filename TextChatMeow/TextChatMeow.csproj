@@ -309,10 +309,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\IChatCommand.cs" />
+    <Compile Include="MessageHandler\MessageHandler.cs" />
+    <Compile Include="MessageHandler\MessagePool.cs" />
     <Compile Include="Plugin.cs" />
-    <Compile Include="Commands.cs" />
+    <Compile Include="Commands\Commands.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="MessageClass.cs" />
+    <Compile Include="MessageHandler\MessageClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
