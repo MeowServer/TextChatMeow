@@ -32,12 +32,12 @@ namespace TextChatMeow
             HintServiceMeow.EventHandler.NewPlayer += EventHandler.CreateNewMessageManager;
             Exiled.Events.Handlers.Player.Left += EventHandler.DeleteMessageManager;
 
-            Exiled.Events.Handlers.Server.RestartingRound += MessagePool.ClearMessageList;
-            Exiled.Events.Handlers.Server.EndingRound += MessagePool.ClearMessageList;
+            Exiled.Events.Handlers.Server.RestartingRound += MessagePool.ClearMessagePool;
+            Exiled.Events.Handlers.Server.EndingRound += MessagePool.ClearMessagePool;
 
-            Exiled.Events.Handlers.Player.ItemAdded += MessagePool.UpdateMessageList;
-            Exiled.Events.Handlers.Player.ItemRemoved += MessagePool.UpdateMessageList;
-            Exiled.Events.Handlers.Player.ChangingRole += MessagePool.UpdateMessageList;
+            Exiled.Events.Handlers.Player.ItemAdded += MessagePool.UpdateMessagePool;
+            Exiled.Events.Handlers.Player.ItemRemoved += MessagePool.UpdateMessagePool;
+            Exiled.Events.Handlers.Player.ChangingRole += MessagePool.UpdateMessagePool;
 
             base.OnEnabled();
             instance = this;
@@ -48,12 +48,12 @@ namespace TextChatMeow
             HintServiceMeow.EventHandler.NewPlayer -= EventHandler.CreateNewMessageManager;
             Exiled.Events.Handlers.Player.Left -= EventHandler.DeleteMessageManager;
 
-            Exiled.Events.Handlers.Server.RestartingRound -= MessagePool.ClearMessageList;
-            Exiled.Events.Handlers.Server.EndingRound -= MessagePool.ClearMessageList;
+            Exiled.Events.Handlers.Server.RestartingRound -= MessagePool.ClearMessagePool;
+            Exiled.Events.Handlers.Server.EndingRound -= MessagePool.ClearMessagePool;
 
-            Exiled.Events.Handlers.Player.ItemAdded -= MessagePool.UpdateMessageList;
-            Exiled.Events.Handlers.Player.ItemRemoved -= MessagePool.UpdateMessageList;
-            Exiled.Events.Handlers.Player.ChangingRole -= MessagePool.UpdateMessageList;
+            Exiled.Events.Handlers.Player.ItemAdded -= MessagePool.UpdateMessagePool;
+            Exiled.Events.Handlers.Player.ItemRemoved -= MessagePool.UpdateMessagePool;
+            Exiled.Events.Handlers.Player.ChangingRole -= MessagePool.UpdateMessagePool;
 
             base.OnDisabled();
             instance = null;

@@ -8,24 +8,22 @@ using System.Threading.Tasks;
 
 namespace TextChatMeow
 {
-    internal class MessagePool
+    internal static class MessagePool
     {
-        public static List<ChatMessage> messageList = new List<ChatMessage>();
+        private static List<ChatMessage> messageList = new List<ChatMessage>();
 
-        public static void UpdateMessageList(ItemRemovedEventArgs ev)
+        public static void UpdateMessagePool(ItemRemovedEventArgs ev) => UpdateMessagePool();
+
+        public static void UpdateMessagePool(ItemAddedEventArgs ev) => UpdateMessagePool();
+
+        public static void UpdateMessagePool(ChangingRoleEventArgs ev) => UpdateMessagePool();
+
+        public static void UpdateMessagePool()
         {
             MessageManager.UpdateAllMessage();
         }
 
-        public static void UpdateMessageList(ItemAddedEventArgs ev)
-        {
-            MessageManager.UpdateAllMessage();
-        }
-
-        public static void UpdateMessageList(ChangingRoleEventArgs ev)
-        {
-            MessageManager.UpdateAllMessage();
-        }
+        public static List<ChatMessage> GetMessages() => messageList;
 
         public static void AddMessage(ChatMessage ms)
         {
@@ -40,12 +38,9 @@ namespace TextChatMeow
             messageList.RemoveAll(x => x.text == message);
         }
 
-        public static void ClearMessageList(EndingRoundEventArgs ev)
-        {
-            messageList.Clear();
-        }
+        public static void ClearMessagePool(EndingRoundEventArgs ev) => ClearMessagePool();
 
-        public static void ClearMessageList()
+        public static void ClearMessagePool()
         {
             messageList.Clear();
         }

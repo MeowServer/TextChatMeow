@@ -18,15 +18,15 @@ namespace TextChatMeow
 
         private Player player;
 
-        private TimeSpan timeCreated;
+        private DateTime timeCreated;
 
         private HintServiceMeow.Hint TextChatTip = new HintServiceMeow.Hint(580, HintAlignment.Left, Plugin.instance.Config.ChatTip);
         private List<HintServiceMeow.Hint> MessageSlots = new List<HintServiceMeow.Hint>()
-        {
-            new HintServiceMeow.Hint(600, HintAlignment.Left, ""),
-            new HintServiceMeow.Hint(620, HintAlignment.Left, ""),
-            new HintServiceMeow.Hint(640, HintAlignment.Left, ""),
-        };
+            {
+                new HintServiceMeow.Hint(600, HintAlignment.Left, ""),
+                new HintServiceMeow.Hint(620, HintAlignment.Left, ""),
+                new HintServiceMeow.Hint(640, HintAlignment.Left, ""),
+            };
 
         public MessageManager(PlayerDisplay playerDisplay)
         {
@@ -36,7 +36,7 @@ namespace TextChatMeow
             playerDisplay.AddHint(TextChatTip);
             playerDisplay.AddHints(MessageSlots);
 
-            timeCreated = Round.ElapsedTime;
+            timeCreated = DateTime.Now;
 
             messagesManagers.Add(this);
         }
@@ -48,18 +48,29 @@ namespace TextChatMeow
 
         public void UpdateMessage()
         {
+            //Get all the message that should be display
+            TimeSpan messageTimeToDisplay = TimeSpan.FromSeconds(Plugin.instance.Config.MessagesHideTime);
+
+            Log.Info(messageTimeToDisplay.ToString());
+            Log.Info($"CurrentTime: {DateTime.Now}");
+
+            foreach (ChatMessage message in MessagePool.GetMessages())
+            {
+                Log.Info($"Message : {message.Type} Time: {message.TimeSent}");
+                Log.Info($"Should be hide :{message.TimeSent + messageTimeToDisplay >= DateTime.Now}");
+            }
+
+            IEnumerable<string> displayableMessages =
+                from ChatMessage message in MessagePool.GetMessages()
+                where message.TimeSent + messageTimeToDisplay <= DateTime.Now
+                where message.CanSee(this.player)
+                select message.text;
+
+            //Update the message onto player's screen
             foreach (var hint in MessageSlots)
             {
                 hint.hide = true;
             }
-
-            TimeSpan messageTimeToDisplay = TimeSpan.FromSeconds(Plugin.instance.Config.MessagesHideTime);
-
-            IEnumerable<string> displayableMessages =
-                from ChatMessage message in MessagePool.messageList
-                where message.TimeSent + messageTimeToDisplay > DateTime.Now
-                where message.CanSee(this.player)
-                select message.text;
 
             int index = 0;
 
@@ -75,9 +86,10 @@ namespace TextChatMeow
                 }
             }
 
+            //Set tip's visibility based on the message's visibility
             TimeSpan tipTimeToDisplay = TimeSpan.FromSeconds(Plugin.instance.Config.TipDisplayTime);
 
-            if (MessageSlots.Any(x => !x.hide) || timeCreated + tipTimeToDisplay >= Round.ElapsedTime)
+            if (MessageSlots.Any(x => !x.hide) || timeCreated + tipTimeToDisplay >= DateTime.Now)
             {
                 TextChatTip.hide = false;
             }
@@ -89,9 +101,9 @@ namespace TextChatMeow
 
         public static void UpdateAllMessage()
         {
-            foreach (var chatMessage in messagesManagers)
+            foreach (var manager in messagesManagers)
             {
-                chatMessage.UpdateMessage();
+                manager.UpdateMessage();
             }
         }
 
@@ -99,9 +111,17 @@ namespace TextChatMeow
         {
             while (true)
             {
-                foreach (var messageManager in messagesManagers)
+                try
                 {
-                    messageManager.UpdateMessage();
+                    foreach (var messageManager in messagesManagers)
+                    {
+                        messageManager.UpdateMessage();
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
                 }
 
                 yield return Timing.WaitForSeconds(1f);
