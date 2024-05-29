@@ -21,7 +21,7 @@ namespace TextChatMeow
 
     internal abstract class ChatMessage
     {
-        public TimeSpan TimeSent { get; set; }
+        public DateTime TimeSent { get; set; }
 
         public abstract ChatMessageType Type { get; }
 
@@ -33,7 +33,7 @@ namespace TextChatMeow
 
         public ChatMessage()
         {
-            TimeSent = Round.ElapsedTime;
+            TimeSent = DateTime.Now;
         }
 
         public abstract bool CanSee(Player receiver);

@@ -20,9 +20,9 @@ namespace TextChatMeow
         public bool Debug { get; set; } = false;
 
         [Description("How long should the tip display before it disappears?")]
-        public int TipDisplayTime { get; set; } = 20;
+        public int TipDisplayTime { get; set; } = 10;
         [Description("How long should a message display before it disappears?")]
-        public int MessagesHideTime { get; set; } = 20;
+        public int MessagesHideTime { get; set; } = 10;
 
         [Description("Proximity Chat Config\nAllow proximity chat?")]
         public bool AllowProximityChat { get; set; } = true;

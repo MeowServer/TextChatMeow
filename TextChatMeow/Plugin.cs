@@ -14,6 +14,8 @@ using UnityEngine;
 
 //  V1.2.0
 //      fixing bugs
+//  V1.2.1
+//      fixing bugs
 
 namespace TextChatMeow
 {
@@ -23,7 +25,7 @@ namespace TextChatMeow
 
         public override string Name => "TextChatMeow";
         public override string Author => "MeowServerOwner";
-        public override Version Version => new Version(1, 2, 0);
+        public override Version Version => new Version(1, 2, 1);
 
         public override void OnEnabled()
         {

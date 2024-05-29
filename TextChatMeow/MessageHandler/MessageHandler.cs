@@ -57,7 +57,7 @@ namespace TextChatMeow
 
             IEnumerable<string> displayableMessages =
                 from ChatMessage message in MessagePool.messageList
-                where message.TimeSent + messageTimeToDisplay > Round.ElapsedTime
+                where message.TimeSent + messageTimeToDisplay > DateTime.Now
                 where message.CanSee(this.player)
                 select message.text;
 
