@@ -18,6 +18,8 @@ using UnityEngine;
 //      fixing bugs
 // V1.2.2
 //      Use count down instead of calculating the time directly. Bug fixing
+// V1.2.3
+//      Bug fixing
 
 namespace TextChatMeow
 {
@@ -27,7 +29,7 @@ namespace TextChatMeow
 
         public override string Name => "TextChatMeow";
         public override string Author => "MeowServerOwner";
-        public override Version Version => new Version(1, 2, 2);
+        public override Version Version => new Version(1, 2, 3);
 
         public override void OnEnabled()
         {

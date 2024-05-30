@@ -58,8 +58,6 @@ namespace TextChatMeow
                     .Where(x => x.CountDown > 0)
                     .Where(x => x.CanSee(this.player))
                     .ToList();
-
-                displayableMessages.ForEach(x => x.CountDown--);
             }
             catch(Exception ex)
             {
@@ -125,6 +123,12 @@ namespace TextChatMeow
                     {
                         messageManager.UpdateMessage();
                     }
+
+                    MessagePool
+                        .GetMessages()
+                        .Where(x => x.CountDown >= 0)
+                        .ToList()
+                        .ForEach(x => x.CountDown--);
                 }
                 catch (Exception e)
                 {
