@@ -21,7 +21,7 @@ namespace TextChatMeow
 
     internal abstract class ChatMessage
     {
-        public DateTime TimeSent { get; set; }
+        public int CountDown { get; set; }
 
         public abstract ChatMessageType Type { get; }
 
@@ -33,9 +33,13 @@ namespace TextChatMeow
 
         public ChatMessage()
         {
-            TimeSent = DateTime.Now;
+            CountDown = Plugin.instance.Config.MessagesHideTime;
         }
 
+        public override string ToString()
+        {
+            return $"Type: {Type} CountDown: {CountDown} SenderNickname: {SenderNickname} SenderRoleType: {SenderRoleType}";
+        }
         public abstract bool CanSee(Player receiver);
     }
 

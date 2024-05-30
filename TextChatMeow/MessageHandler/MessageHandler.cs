@@ -49,53 +49,61 @@ namespace TextChatMeow
         public void UpdateMessage()
         {
             //Get all the message that should be display
-            TimeSpan messageTimeToDisplay = TimeSpan.FromSeconds(Plugin.instance.Config.MessagesHideTime);
+            List<ChatMessage> displayableMessages = new List<ChatMessage>();
 
-            Log.Info(messageTimeToDisplay.ToString());
-            Log.Info($"CurrentTime: {DateTime.Now}");
-
-            foreach (ChatMessage message in MessagePool.GetMessages())
+            try
             {
-                Log.Info($"Message : {message.Type} Time: {message.TimeSent}");
-                Log.Info($"Should be hide :{message.TimeSent + messageTimeToDisplay >= DateTime.Now}");
-            }
+                displayableMessages = MessagePool
+                    .GetMessages()
+                    .Where(x => x.CountDown > 0)
+                    .Where(x => x.CanSee(this.player))
+                    .ToList();
 
-            IEnumerable<string> displayableMessages =
-                from ChatMessage message in MessagePool.GetMessages()
-                where message.TimeSent + messageTimeToDisplay <= DateTime.Now
-                where message.CanSee(this.player)
-                select message.text;
+                displayableMessages.ForEach(x => x.CountDown--);
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex);
+            }
 
             //Update the message onto player's screen
-            foreach (var hint in MessageSlots)
+            try
             {
-                hint.hide = true;
-            }
-
-            int index = 0;
-
-            foreach (string text in displayableMessages)
-            {
-                MessageSlots[index].message = text;
-                MessageSlots[index].hide = false;
-
-                index++;
-                if (index >= MessageSlots.Count())
+                foreach (HintServiceMeow.Hint hint in MessageSlots)
                 {
-                    break;
+                    hint.hide = true;
                 }
+
+                for (var i = 0; i < MessageSlots.Count() && i < displayableMessages.Count(); i++)
+                {
+                    ChatMessage message = displayableMessages[i];
+
+                    MessageSlots[i].message = message.text;
+                    MessageSlots[i].hide = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
             }
 
             //Set tip's visibility based on the message's visibility
-            TimeSpan tipTimeToDisplay = TimeSpan.FromSeconds(Plugin.instance.Config.TipDisplayTime);
+            try
+            {
+                TimeSpan tipTimeToDisplay = TimeSpan.FromSeconds(Plugin.instance.Config.TipDisplayTime);
 
-            if (MessageSlots.Any(x => !x.hide) || timeCreated + tipTimeToDisplay >= DateTime.Now)
-            {
-                TextChatTip.hide = false;
+                if (MessageSlots.Any(x => !x.hide) || timeCreated + tipTimeToDisplay >= DateTime.Now)
+                {
+                    TextChatTip.hide = false;
+                }
+                else
+                {
+                    TextChatTip.hide = true;
+                }
             }
-            else
+            catch(Exception ex)
             {
-                TextChatTip.hide = true;
+                Log.Error(ex);
             }
         }
 
@@ -117,14 +125,13 @@ namespace TextChatMeow
                     {
                         messageManager.UpdateMessage();
                     }
-
                 }
                 catch (Exception e)
                 {
                     Log.Error(e);
                 }
 
-                yield return Timing.WaitForSeconds(1f);
+                yield return Timing.WaitForSeconds(1f);//if changes, also change the time in UpdateMessage
             }
         }
     }
