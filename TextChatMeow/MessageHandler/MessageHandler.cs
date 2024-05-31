@@ -12,9 +12,9 @@ namespace TextChatMeow
 {
     internal class MessageManager
     {
-        public static List<MessageManager> messagesManagers = new List<MessageManager>();
+        private static List<MessageManager> messagesManagers = new List<MessageManager>();
 
-        private static CoroutineHandle AutoUpdateCoroutine = Timing.RunCoroutine(AutoUpdateMethod());
+        private CoroutineHandle AutoUpdateCoroutine;
 
         private Player player;
 
@@ -38,11 +38,18 @@ namespace TextChatMeow
 
             timeCreated = DateTime.Now;
 
+            AutoUpdateCoroutine = Timing.RunCoroutine(AutoUpdateMethod(this));
+
             messagesManagers.Add(this);
         }
 
         public static void RemoveMessageManager(Player player)
         {
+            messagesManagers.ForEach(x =>
+            {
+                if (x.AutoUpdateCoroutine.IsRunning)
+                    Timing.KillCoroutines(x.AutoUpdateCoroutine);
+            });
             messagesManagers.RemoveAll(x => x.player == player);
         }
 
@@ -55,9 +62,11 @@ namespace TextChatMeow
             {
                 displayableMessages = MessagePool
                     .GetMessages()
-                    .Where(x => x.CountDown > 0)
                     .Where(x => x.CanSee(this.player))
                     .ToList();
+
+                if (Plugin.instance.Config.MessagesDisappears)
+                    displayableMessages.RemoveAll(x => x.CountDown <= 0);
             }
             catch(Exception ex)
             {
@@ -76,7 +85,14 @@ namespace TextChatMeow
                 {
                     ChatMessage message = displayableMessages[i];
 
-                    MessageSlots[i].message = message.text;
+                    string text = string.Empty;
+
+                    if (Plugin.instance.Config.AddCountDown)
+                        text += $"[{message.CountDown}]";//Add countdown in front of the message (if enabled
+
+                    text += message.text;
+
+                    MessageSlots[i].message = text;
                     MessageSlots[i].hide = false;
                 }
             }
@@ -90,7 +106,7 @@ namespace TextChatMeow
             {
                 TimeSpan tipTimeToDisplay = TimeSpan.FromSeconds(Plugin.instance.Config.TipDisplayTime);
 
-                if (MessageSlots.Any(x => !x.hide) || timeCreated + tipTimeToDisplay >= DateTime.Now)
+                if (Plugin.instance.Config.TipDisappears == false||MessageSlots.Any(x => !x.hide) || timeCreated + tipTimeToDisplay >= DateTime.Now)
                 {
                     TextChatTip.hide = false;
                 }
@@ -113,29 +129,20 @@ namespace TextChatMeow
             }
         }
 
-        private static IEnumerator<float> AutoUpdateMethod()
+        private static IEnumerator<float> AutoUpdateMethod(MessageManager messageManager)
         {
             while (true)
             {
                 try
                 {
-                    foreach (var messageManager in messagesManagers)
-                    {
-                        messageManager.UpdateMessage();
-                    }
-
-                    MessagePool
-                        .GetMessages()
-                        .Where(x => x.CountDown >= 0)
-                        .ToList()
-                        .ForEach(x => x.CountDown--);
+                    messageManager.UpdateMessage();
                 }
                 catch (Exception e)
                 {
                     Log.Error(e);
                 }
 
-                yield return Timing.WaitForSeconds(1f);//if changes, also change the time in UpdateMessage
+                yield return Timing.WaitForSeconds(0.1f);//if changes, also change the time in UpdateMessage
             }
         }
     }
