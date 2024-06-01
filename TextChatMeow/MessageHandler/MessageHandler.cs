@@ -22,11 +22,11 @@ namespace TextChatMeow
 
         private HintServiceMeow.Hint TextChatTip = new HintServiceMeow.Hint(580, HintAlignment.Left, Plugin.instance.Config.ChatTip);
         private List<HintServiceMeow.Hint> MessageSlots = new List<HintServiceMeow.Hint>()
-            {
-                new HintServiceMeow.Hint(600, HintAlignment.Left, ""),
-                new HintServiceMeow.Hint(620, HintAlignment.Left, ""),
-                new HintServiceMeow.Hint(640, HintAlignment.Left, ""),
-            };
+        {
+            new HintServiceMeow.Hint(600, HintAlignment.Left, ""),
+            new HintServiceMeow.Hint(620, HintAlignment.Left, ""),
+            new HintServiceMeow.Hint(640, HintAlignment.Left, ""),
+        };
 
         public MessageManager(PlayerDisplay playerDisplay)
         {
@@ -45,11 +45,6 @@ namespace TextChatMeow
 
         public static void RemoveMessageManager(Player player)
         {
-            messagesManagers.ForEach(x =>
-            {
-                if (x.AutoUpdateCoroutine.IsRunning)
-                    Timing.KillCoroutines(x.AutoUpdateCoroutine);
-            });
             messagesManagers.RemoveAll(x => x.player == player);
         }
 
@@ -65,7 +60,7 @@ namespace TextChatMeow
                     .Where(x => x.CanSee(this.player))
                     .ToList();
 
-                if (Plugin.instance.Config.MessagesDisappears)
+                if (Plugin.instance.Config.MessagesDisappears) 
                     displayableMessages.RemoveAll(x => x.CountDown <= 0);
             }
             catch(Exception ex)
@@ -91,6 +86,8 @@ namespace TextChatMeow
                         text += $"[{message.CountDown}]";//Add countdown in front of the message (if enabled
 
                     text += message.text;
+
+                    text += new string(' ', message.CountDown % 10);
 
                     MessageSlots[i].message = text;
                     MessageSlots[i].hide = false;
