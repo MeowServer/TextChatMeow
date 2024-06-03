@@ -23,7 +23,7 @@ namespace TextChatMeow
         public bool TipDisappears { get; set; } = true;
         [Description("Should the message disappear after a while? Do not close this when AddCountDown is active, otherwise error may occur.")]
         public bool MessagesDisappears { get; set; } = true;
-        [Description("Should the tip have a countdown in front of them?")]
+        [Description("Should the tip have a countdown in front of them? This will only be active when MessagesDisappears is active.")]
         public bool AddCountDown { get; set; } = false;
 
         [Description("How long should the tip display before it disappears?")]

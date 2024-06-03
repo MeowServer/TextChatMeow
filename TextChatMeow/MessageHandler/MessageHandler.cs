@@ -79,7 +79,7 @@ namespace TextChatMeow
 
                     string text = string.Empty;
 
-                    if (Plugin.instance.Config.AddCountDown)
+                    if (Plugin.instance.Config.AddCountDown && Plugin.instance.Config.MessagesDisappears)
                     {
                         int countdown = Plugin.instance.Config.MessagesHideTime - (int)(DateTime.Now - message.TimeSent).TotalSeconds;
                         text += $"[{countdown}]";//Add countdown in front of the message (if enabled
