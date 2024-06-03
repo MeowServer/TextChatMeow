@@ -311,7 +311,7 @@
   <ItemGroup>
     <Compile Include="Commands\IChatCommand.cs" />
     <Compile Include="MessageHandler\MessageHandler.cs" />
-    <Compile Include="MessageHandler\MessagePool.cs" />
+    <Compile Include="MessageHandler\MessageList.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Commands\Commands.cs" />
     <Compile Include="Config.cs" />

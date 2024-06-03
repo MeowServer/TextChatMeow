@@ -55,13 +55,10 @@ namespace TextChatMeow
 
             try
             {
-                displayableMessages = MessagePool
+                displayableMessages = MessageList
                     .GetMessages()
                     .Where(x => x.CanSee(this.player))
                     .ToList();
-
-                if (Plugin.instance.Config.MessagesDisappears) 
-                    displayableMessages.RemoveAll(x => x.CountDown <= 0);
             }
             catch(Exception ex)
             {
@@ -83,11 +80,15 @@ namespace TextChatMeow
                     string text = string.Empty;
 
                     if (Plugin.instance.Config.AddCountDown)
-                        text += $"[{message.CountDown}]";//Add countdown in front of the message (if enabled
+                    {
+                        int countdown = Plugin.instance.Config.MessagesHideTime - (int)(DateTime.Now - message.TimeSent).TotalSeconds;
+                        text += $"[{countdown}]";//Add countdown in front of the message (if enabled
+                    }
+                        
 
                     text += message.text;
 
-                    text += new string(' ', message.CountDown % 10);
+                    text += new string(' ', message.TimeSent.Second % 10);
 
                     MessageSlots[i].message = text;
                     MessageSlots[i].hide = false;
@@ -149,13 +150,13 @@ namespace TextChatMeow
         public static void SendMessage(string message, string source, List<Player> targets)
         {
             var ms = new SystemChatMessage(message, source, targets);
-            MessagePool.AddMessage(ms);
+            MessageList.AddMessage(ms);
         }
 
         public static void SendMessage(string message, string source, List<Player> targets, Color color)
         {
             var ms = new SystemChatMessage(message, source, targets, color);
-            MessagePool.AddMessage(ms);
+            MessageList.AddMessage(ms);
         }
     }
 }

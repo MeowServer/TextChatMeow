@@ -4,6 +4,7 @@ using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -21,7 +22,7 @@ namespace TextChatMeow
 
     internal abstract class ChatMessage
     {
-        public int CountDown { get; set; }
+        public DateTime TimeSent { get; set; }
 
         public abstract ChatMessageType Type { get; }
 
@@ -33,12 +34,12 @@ namespace TextChatMeow
 
         public ChatMessage()
         {
-            CountDown = Plugin.instance.Config.MessagesHideTime;
+            TimeSent = DateTime.Now;
         }
 
         public override string ToString()
         {
-            return $"Type: {Type} CountDown: {CountDown} SenderNickname: {SenderNickname} SenderRoleType: {SenderRoleType}";
+            return $"TimeSent: {TimeSent} | Type: {Type} | SenderNickname: {SenderNickname} | SenderRoleType: {SenderRoleType}";
         }
         public abstract bool CanSee(Player receiver);
     }
@@ -52,7 +53,7 @@ namespace TextChatMeow
         private string source;
         private Color sourceColor;
 
-        private string _message;
+        private string _text;
         public override string text
         {
             get
@@ -63,13 +64,13 @@ namespace TextChatMeow
                     .Replace("{role}", source)
                     .Replace("{colorOfRole}", sourceColor.ToHex());
 
-                str += _message;
+                str += _text;
 
                 return str;
             }
             set
             {
-                _message = value;
+                _text = value;
             }
         }
 

@@ -33,7 +33,7 @@ namespace TextChatMeow
             var str = string.Join(" ", arguments.ToArray());
             var message = new ProximityChatMessage(str, player);
 
-            MessagePool.AddMessage(message);
+            MessageList.AddMessage(message);
 
             response = $"您的消息已被发送至周围玩家：{str}";
             return true;
@@ -79,7 +79,7 @@ namespace TextChatMeow
             var str = string.Join(" ", arguments.ToArray());
             var message = new RadioChatMessage(str, player);
 
-            MessagePool.AddMessage(message);
+            MessageList.AddMessage(message);
 
             response = $"您的消息已通过无线电发送：{str}";
             return true;
@@ -135,7 +135,7 @@ namespace TextChatMeow
             var str = string.Join(" ", arguments.ToArray());
             var message = new PublicChatMessage(str, player);
 
-            MessagePool.AddMessage(message);
+            MessageList.AddMessage(message);
 
             response = $"您的消息已被发送至所有玩家：{str}";
             return true;
@@ -179,7 +179,7 @@ namespace TextChatMeow
             var str = string.Join(" ", arguments.ToArray());
             var message = new TeamChatMessage(str, player);
 
-            MessagePool.AddMessage(message);
+            MessageList.AddMessage(message);
 
             response = $"您的消息已被发送至同队伍的玩家：{str}";
             return true;

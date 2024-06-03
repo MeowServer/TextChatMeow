@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace TextChatMeow
 {
-    internal static class MessagePool
+    internal static class MessageList//I suspect someone accidentally use reflection to access this class
     {
         private static List<ChatMessage> messageList = new List<ChatMessage>();
 
@@ -23,9 +23,6 @@ namespace TextChatMeow
 
         public static void UpdateMessagePool()
         {
-            if (!CountdownCoroutine.IsRunning)
-                CountdownCoroutine = Timing.RunCoroutine(CountdownMethod());
-
             MessageManager.UpdateAllMessage();
         }
 
@@ -33,9 +30,6 @@ namespace TextChatMeow
 
         public static void AddMessage(ChatMessage ms)
         {
-            if (!CountdownCoroutine.IsRunning)
-                CountdownCoroutine = Timing.RunCoroutine(CountdownMethod());
-
             messageList.Insert(0, ms);
             MessageManager.UpdateAllMessage();
 
@@ -52,9 +46,6 @@ namespace TextChatMeow
         public static void ClearMessagePool()
         {
             messageList.Clear();
-
-            if(CountdownCoroutine.IsRunning)
-                Timing.KillCoroutines(CountdownCoroutine);
         }
 
         private static IEnumerator<float> CountdownMethod()
@@ -65,8 +56,41 @@ namespace TextChatMeow
             {
                 try
                 {
-                    messageList
-                        .ForEach(x => x.CountDown -= (int)timeInterval);
+                    if(Plugin.instance.Config.Debug && messageList.Count > 0)
+                    {
+                        string DebugInfo = string.Empty;
+                        DebugInfo += "\n==============MessageList================\n";
+                        DebugInfo += $"Message Count: {messageList.Count}\n";
+
+                        foreach (var message in messageList)
+                        {
+                            DebugInfo += $"{message.ToString()}\n";
+                        }
+
+                        DebugInfo += "*********Removing Messages*********\n";
+
+                        foreach(var message in MessageList.GetMessages())
+                        {
+                            if(DateTime.Now - message.TimeSent >= TimeSpan.FromSeconds(Plugin.instance.Config.MessagesHideTime))
+                            {
+                                DebugInfo += "Total Time Displayed: " + (DateTime.Now - message.TimeSent);
+                                DebugInfo += $"{message.ToString()}\n";
+                            }
+                        }
+
+                        DebugInfo += "=========================================\n";
+
+                        Log.Debug(DebugInfo);
+                    }
+
+                    if (messageList.Count > 0)
+                    {
+                        messageList.RemoveAll(x =>
+                        {
+                            return DateTime.Now - x.TimeSent >= TimeSpan.FromSeconds(Plugin.instance.Config.MessagesHideTime);
+                        });
+                    }
+                    
                 }
                 catch (Exception e)
                 {

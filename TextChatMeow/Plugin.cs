@@ -22,6 +22,8 @@ using UnityEngine;
 //      Bug fixing
 // V1.2.4
 //      Bug fixing
+// V1.2.5
+//      Use DateTime instead of count down. Bug fixing
 
 namespace TextChatMeow
 {
@@ -31,19 +33,19 @@ namespace TextChatMeow
 
         public override string Name => "TextChatMeow";
         public override string Author => "MeowServerOwner";
-        public override Version Version => new Version(1, 2, 4);
+        public override Version Version => new Version(1, 2, 5);
 
         public override void OnEnabled()
         {
             HintServiceMeow.EventHandler.NewPlayer += EventHandler.CreateNewMessageManager;
             Exiled.Events.Handlers.Player.Left += EventHandler.DeleteMessageManager;
 
-            Exiled.Events.Handlers.Server.RestartingRound += MessagePool.ClearMessagePool;
-            Exiled.Events.Handlers.Server.EndingRound += MessagePool.ClearMessagePool;
+            Exiled.Events.Handlers.Server.RestartingRound += MessageList.ClearMessagePool;
+            Exiled.Events.Handlers.Server.EndingRound += MessageList.ClearMessagePool;
 
-            Exiled.Events.Handlers.Player.ItemAdded += MessagePool.UpdateMessagePool;
-            Exiled.Events.Handlers.Player.ItemRemoved += MessagePool.UpdateMessagePool;
-            Exiled.Events.Handlers.Player.ChangingRole += MessagePool.UpdateMessagePool;
+            Exiled.Events.Handlers.Player.ItemAdded += MessageList.UpdateMessagePool;
+            Exiled.Events.Handlers.Player.ItemRemoved += MessageList.UpdateMessagePool;
+            Exiled.Events.Handlers.Player.ChangingRole += MessageList.UpdateMessagePool;
 
             base.OnEnabled();
             instance = this;
@@ -54,12 +56,12 @@ namespace TextChatMeow
             HintServiceMeow.EventHandler.NewPlayer -= EventHandler.CreateNewMessageManager;
             Exiled.Events.Handlers.Player.Left -= EventHandler.DeleteMessageManager;
 
-            Exiled.Events.Handlers.Server.RestartingRound -= MessagePool.ClearMessagePool;
-            Exiled.Events.Handlers.Server.EndingRound -= MessagePool.ClearMessagePool;
+            Exiled.Events.Handlers.Server.RestartingRound -= MessageList.ClearMessagePool;
+            Exiled.Events.Handlers.Server.EndingRound -= MessageList.ClearMessagePool;
 
-            Exiled.Events.Handlers.Player.ItemAdded -= MessagePool.UpdateMessagePool;
-            Exiled.Events.Handlers.Player.ItemRemoved -= MessagePool.UpdateMessagePool;
-            Exiled.Events.Handlers.Player.ChangingRole -= MessagePool.UpdateMessagePool;
+            Exiled.Events.Handlers.Player.ItemAdded -= MessageList.UpdateMessagePool;
+            Exiled.Events.Handlers.Player.ItemRemoved -= MessageList.UpdateMessagePool;
+            Exiled.Events.Handlers.Player.ChangingRole -= MessageList.UpdateMessagePool;
 
             base.OnDisabled();
             instance = null;
