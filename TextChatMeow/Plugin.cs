@@ -24,6 +24,8 @@ using UnityEngine;
 //      Bug fixing
 // V1.2.5
 //      Use DateTime instead of count down. Bug fixing
+// V1.3.0
+//      Use regex to clear rich-text tags.
 
 namespace TextChatMeow
 {
@@ -33,7 +35,7 @@ namespace TextChatMeow
 
         public override string Name => "TextChatMeow";
         public override string Author => "MeowServerOwner";
-        public override Version Version => new Version(1, 2, 5);
+        public override Version Version => new Version(1, 3, 0);
 
         public override void OnEnabled()
         {

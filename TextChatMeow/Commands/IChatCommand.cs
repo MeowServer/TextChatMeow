@@ -10,5 +10,7 @@ namespace TextChatMeow
     public interface IChatCommand
     {
         bool CheckPermission(Player player, out string response);
+
+        void SendMessage(string str, Player player);
     }
 }

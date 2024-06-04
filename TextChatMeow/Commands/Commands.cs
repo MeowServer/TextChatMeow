@@ -1,16 +1,16 @@
-﻿using CommandSystem;
+﻿using UnityEngine;
+using CommandSystem;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
-using Exiled.API.Features.Pickups;
-using LogWritterMeow;
-using PlayerRoles;
-using PlayerRoles.Spectating;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using UnityEngine;
+
+using TextChatMeow.Commands;
 
 namespace TextChatMeow
 {
@@ -31,9 +31,7 @@ namespace TextChatMeow
                 return false;
 
             var str = string.Join(" ", arguments.ToArray());
-            var message = new ProximityChatMessage(str, player);
-
-            MessageList.AddMessage(message);
+            SendMessage(str, player);
 
             response = $"您的消息已被发送至周围玩家：{str}";
             return true;
@@ -56,6 +54,14 @@ namespace TextChatMeow
             resposne = string.Empty;
             return true;
         }
+
+        public void SendMessage(string str, Player player)
+        {
+            str = MessageTools.ClearTags(str);
+            var message = new ProximityChatMessage(str, player);
+
+            MessageList.AddMessage(message);
+        }
     }
 
     [CommandHandler(typeof(ClientCommandHandler))]
@@ -74,12 +80,8 @@ namespace TextChatMeow
             if(!CheckPermission(player, out response))
                 return false;
 
-            ((Radio)player.Items.First(x => x.Type == ItemType.Radio)).BatteryLevel--;
-
             var str = string.Join(" ", arguments.ToArray());
-            var message = new RadioChatMessage(str, player);
-
-            MessageList.AddMessage(message);
+            SendMessage(str, player);
 
             response = $"您的消息已通过无线电发送：{str}";
             return true;
@@ -114,6 +116,16 @@ namespace TextChatMeow
             response = string.Empty;
             return true;
         }
+
+        public void SendMessage(string str, Player player)
+        {
+            ((Radio)player.Items.First(x => x.Type == ItemType.Radio)).BatteryLevel--;
+
+            str = MessageTools.ClearTags(str);
+            var message = new RadioChatMessage(str, player);
+
+            MessageList.AddMessage(message);
+        }
     }
 
     [CommandHandler(typeof(ClientCommandHandler))]
@@ -133,9 +145,7 @@ namespace TextChatMeow
                 return false;
 
             var str = string.Join(" ", arguments.ToArray());
-            var message = new PublicChatMessage(str, player);
-
-            MessageList.AddMessage(message);
+            SendMessage(str, player);
 
             response = $"您的消息已被发送至所有玩家：{str}";
             return true;
@@ -158,6 +168,14 @@ namespace TextChatMeow
             response = string.Empty;
             return true;
         }
+
+        public void SendMessage(string str, Player player)
+        {
+            str = MessageTools.ClearTags(str);
+            var message = new PublicChatMessage(str, player);
+
+            MessageList.AddMessage(message);
+        }
     }
 
     [CommandHandler(typeof(ClientCommandHandler))]
@@ -177,9 +195,7 @@ namespace TextChatMeow
                 return false;
 
             var str = string.Join(" ", arguments.ToArray());
-            var message = new TeamChatMessage(str, player);
-
-            MessageList.AddMessage(message);
+            SendMessage(str, player);
 
             response = $"您的消息已被发送至同队伍的玩家：{str}";
             return true;
@@ -202,6 +218,14 @@ namespace TextChatMeow
 
             response = string.Empty;
             return true;
+        }
+
+        public void SendMessage(string str, Player player)
+        {
+            str = MessageTools.ClearTags(str);
+            var message = new TeamChatMessage(str, player);
+
+            MessageList.AddMessage(message);
         }
     }
 }

@@ -33,7 +33,13 @@ namespace TextChatMeow
             messageList.Insert(0, ms);
             MessageManager.UpdateAllMessage();
 
-            LogWritterMeow.Logger.Info(ms.text);
+            try
+            {
+                LogWritterMeow.Logger.Info(ms.text);
+            }catch(Exception ex) {
+                
+            }
+            
         }
 
         public static void RemoveMessage(string message)

@@ -310,6 +310,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\IChatCommand.cs" />
+    <Compile Include="Commands\MessageTools.cs" />
     <Compile Include="MessageHandler\MessageHandler.cs" />
     <Compile Include="MessageHandler\MessageList.cs" />
     <Compile Include="Plugin.cs" />
