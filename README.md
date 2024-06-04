@@ -1,3 +1,6 @@
+### Designed for Meow Servers~
+- [English](https://github.com/MeowServer/TextChatMeow/blob/main/README.md)
+- [中文](https://github.com/MeowServer/TextChatMeow/blob/main/README_Zh.md)
 # Text Chat
 This Exiled plugin for SCP: Secret Laboratory enables players to chat via the game console.
 #  Configuration
