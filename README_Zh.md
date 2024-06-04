@@ -1,3 +1,6 @@
+### Designed for Meow Servers~
+- [English](https://github.com/MeowServer/TextChatMeow/blob/main/README.md)
+- [中文](https://github.com/MeowServer/TextChatMeow/blob/main/README_Zh.md)
 # 文字聊天
 这是一个SCP：秘密实验室服务器的Exiled插件，此插件允许玩家使用控制台向其他玩家发送文字消息
 #  安装
