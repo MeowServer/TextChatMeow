@@ -10,9 +10,9 @@ using UnityEngine;
 
 namespace TextChatMeow
 {
-    internal class MessageManager
+    internal class PlayerMessageHandler
     {
-        private static List<MessageManager> messagesManagers = new List<MessageManager>();
+        private static List<PlayerMessageHandler> messagesManagers = new List<PlayerMessageHandler>();
 
         private CoroutineHandle AutoUpdateCoroutine;
 
@@ -28,7 +28,7 @@ namespace TextChatMeow
             new HintServiceMeow.Hint(640, HintAlignment.Left, ""),
         };
 
-        public MessageManager(PlayerDisplay playerDisplay)
+        public PlayerMessageHandler(PlayerDisplay playerDisplay)
         {
             this.player = playerDisplay.player;
 
@@ -55,8 +55,8 @@ namespace TextChatMeow
 
             try
             {
-                displayableMessages = MessageList
-                    .GetMessages()
+                displayableMessages = MessageManager
+                    .messageList
                     .Where(x => x.CanSee(this.player))
                     .ToList();
             }
@@ -127,7 +127,7 @@ namespace TextChatMeow
             }
         }
 
-        private static IEnumerator<float> AutoUpdateMethod(MessageManager messageManager)
+        private static IEnumerator<float> AutoUpdateMethod(PlayerMessageHandler messageManager)
         {
             while (true)
             {
@@ -150,13 +150,13 @@ namespace TextChatMeow
         public static void SendMessage(string message, string source, List<Player> targets)
         {
             var ms = new SystemChatMessage(message, source, targets);
-            MessageList.AddMessage(ms);
+            MessageManager.AddMessage(ms);
         }
 
         public static void SendMessage(string message, string source, List<Player> targets, Color color)
         {
             var ms = new SystemChatMessage(message, source, targets, color);
-            MessageList.AddMessage(ms);
+            MessageManager.AddMessage(ms);
         }
     }
 }

@@ -4,24 +4,32 @@ using Exiled.Events.EventArgs.Server;
 using MEC;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TextChatMeow
 {
-    internal static class MessageList
+    internal static class MessageManager
     {
-        private static List<ChatMessage> messageList = new List<ChatMessage>();
-
         private static CoroutineHandle CountdownCoroutine = Timing.RunCoroutine(CountdownMethod());
 
-        public static List<ChatMessage> GetMessages() => messageList;
+        private static CustomMessageList<ChatMessage> _messageList = new CustomMessageList<ChatMessage>();
+
+        public static ReadOnlyCollection<ChatMessage> messageList
+        {
+            get
+            {
+                return _messageList.AsReadOnly();
+            }
+        }
 
         public static void AddMessage(ChatMessage ms)
         {
-            messageList.Insert(0, ms);
-            MessageManager.UpdateAllMessage();
+            _messageList.Insert(0, ms);
 
             try
             {
@@ -34,12 +42,16 @@ namespace TextChatMeow
             
         }
 
-        public static void ClearMessagePool(EndingRoundEventArgs ev) => ClearMessagePool();
-
-        public static void ClearMessagePool()
+        public static void ClearMessageList(RoundEndedEventArgs ev)
         {
-            Log.Debug("ClearMessagePool Had Been Called");
-            messageList.Clear();
+            Log.Debug("Clearing Message List Since Round Ended");
+            _messageList.Clear();
+        }
+
+        public static void ClearMessageList()
+        {
+            Log.Debug("Clearing Message List Since Round Restarted");
+            _messageList.Clear();
         }
 
         private static IEnumerator<float> CountdownMethod()
@@ -64,7 +76,7 @@ namespace TextChatMeow
 
                         DebugInfo += "*********Removing Messages*********\n";
 
-                        foreach(var message in MessageList.GetMessages())
+                        foreach(var message in messageList)
                         {
                             if(DateTime.Now - message.TimeSent >= TimeSpan.FromSeconds(Plugin.instance.Config.MessagesHideTime))
                             {
@@ -81,7 +93,7 @@ namespace TextChatMeow
                     //Clear time out messages
                     if (messageList.Count > 0 && Plugin.instance.Config.MessagesDisappears)
                     {
-                        messageList.RemoveAll(x => DateTime.Now - x.TimeSent >= TimeSpan.FromSeconds(Plugin.instance.Config.MessagesHideTime) );
+                        _messageList.RemoveAll(x => DateTime.Now - x.TimeSent >= TimeSpan.FromSeconds(Plugin.instance.Config.MessagesHideTime) );
                     }
                     
                 }
@@ -92,6 +104,36 @@ namespace TextChatMeow
 
                 yield return Timing.WaitForSeconds(timeInterval);//if changes, also change the time in UpdateMessage
             }
+        }
+    }
+
+    internal class CustomMessageList<T> : List<ChatMessage>
+    {
+        public new bool Remove(ChatMessage message)
+        {
+            if (Plugin.instance.Config.Debug)
+            {
+                Log.Debug("Removing Hint From Message List");
+
+                string DebugInfo = string.Empty;
+                DebugInfo += "Total Time Displayed: " + (DateTime.Now - message.TimeSent) + " | ";
+                DebugInfo += $"{message.ToString()}\n";
+
+                Log.Debug(DebugInfo);
+            }
+
+            return base.Remove(message);
+        }
+
+        public new void Clear()
+        {
+            if (Plugin.instance.Config.Debug)
+            {
+                Log.Debug("Clearing Message List");
+            }
+                
+
+            base.Clear();
         }
     }
 }

@@ -42,8 +42,8 @@ namespace TextChatMeow
             HintServiceMeow.EventHandler.NewPlayer += EventHandler.CreateNewMessageManager;
             Exiled.Events.Handlers.Player.Left += EventHandler.DeleteMessageManager;
 
-            Exiled.Events.Handlers.Server.RestartingRound += MessageList.ClearMessagePool;
-            Exiled.Events.Handlers.Server.EndingRound += MessageList.ClearMessagePool;
+            Exiled.Events.Handlers.Server.RestartingRound += MessageManager.ClearMessageList;
+            Exiled.Events.Handlers.Server.RoundEnded += MessageManager.ClearMessageList;
 
             base.OnEnabled();
             instance = this;
@@ -54,8 +54,8 @@ namespace TextChatMeow
             HintServiceMeow.EventHandler.NewPlayer -= EventHandler.CreateNewMessageManager;
             Exiled.Events.Handlers.Player.Left -= EventHandler.DeleteMessageManager;
 
-            Exiled.Events.Handlers.Server.RestartingRound -= MessageList.ClearMessagePool;
-            Exiled.Events.Handlers.Server.EndingRound -= MessageList.ClearMessagePool;
+            Exiled.Events.Handlers.Server.RestartingRound -= MessageManager.ClearMessageList;
+            Exiled.Events.Handlers.Server.RoundEnded -= MessageManager.ClearMessageList;
 
             base.OnDisabled();
             instance = null;
@@ -66,12 +66,12 @@ namespace TextChatMeow
     {
         public static void CreateNewMessageManager(PlayerDisplay playerDisplay)
         {
-            new MessageManager(playerDisplay);
+            new PlayerMessageHandler(playerDisplay);
         }
 
         public static void DeleteMessageManager(LeftEventArgs ev)
         {
-            MessageManager.RemoveMessageManager(ev.Player);
+            PlayerMessageHandler.RemoveMessageManager(ev.Player);
         }
     }
 }
