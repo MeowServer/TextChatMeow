@@ -129,7 +129,7 @@ namespace TextChatMeow
 
         private static IEnumerator<float> AutoUpdateMethod(PlayerMessageHandler messageManager)
         {
-            while (true)
+            while (messageManager.player != null && messageManager.player.IsConnected)
             {
                 try
                 {
@@ -142,21 +142,6 @@ namespace TextChatMeow
 
                 yield return Timing.WaitForSeconds(0.1f);
             }
-        }
-    }
-
-    public static class SystemMessageSender
-    {
-        public static void SendMessage(string message, string source, List<Player> targets)
-        {
-            var ms = new SystemChatMessage(message, source, targets);
-            MessageManager.AddMessage(ms);
-        }
-
-        public static void SendMessage(string message, string source, List<Player> targets, Color color)
-        {
-            var ms = new SystemChatMessage(message, source, targets, color);
-            MessageManager.AddMessage(ms);
         }
     }
 }

@@ -309,9 +309,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\SystemMessageSender.cs" />
     <Compile Include="Commands\IChatCommand.cs" />
     <Compile Include="Commands\CommandTools.cs" />
-    <Compile Include="MessageHandler\MessageHandler.cs" />
+    <Compile Include="MessageHandler\PlayerMessageHandler.cs" />
     <Compile Include="MessageHandler\MessageManager.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Commands\Commands.cs" />
