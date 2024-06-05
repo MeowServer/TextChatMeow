@@ -60,7 +60,7 @@ namespace TextChatMeow
             str = CommandTools.ClearTags(str);
             var message = new ProximityChatMessage(str, player);
 
-            MessageManager.AddMessage(message);
+            MessagesList.AddMessage(message);
         }
     }
 
@@ -124,7 +124,7 @@ namespace TextChatMeow
             str = CommandTools.ClearTags(str);
             var message = new RadioChatMessage(str, player);
 
-            MessageManager.AddMessage(message);
+            MessagesList.AddMessage(message);
         }
     }
 
@@ -174,7 +174,7 @@ namespace TextChatMeow
             str = CommandTools.ClearTags(str);
             var message = new PublicChatMessage(str, player);
 
-            MessageManager.AddMessage(message);
+            MessagesList.AddMessage(message);
         }
     }
 
@@ -225,7 +225,7 @@ namespace TextChatMeow
             str = CommandTools.ClearTags(str);
             var message = new TeamChatMessage(str, player);
 
-            MessageManager.AddMessage(message);
+            MessagesList.AddMessage(message);
         }
     }
 }

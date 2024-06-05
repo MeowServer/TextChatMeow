@@ -313,7 +313,7 @@
     <Compile Include="Commands\IChatCommand.cs" />
     <Compile Include="Commands\CommandTools.cs" />
     <Compile Include="MessageHandler\PlayerMessageHandler.cs" />
-    <Compile Include="MessageHandler\MessageManager.cs" />
+    <Compile Include="MessageHandler\MessagesList.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Commands\Commands.cs" />
     <Compile Include="Config.cs" />

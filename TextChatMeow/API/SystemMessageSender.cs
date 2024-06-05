@@ -13,13 +13,13 @@ namespace TextChatMeow.API
         public static void SendMessage(string message, string source, List<Player> targets)
         {
             var ms = new SystemChatMessage(message, source, targets);
-            MessageManager.AddMessage(ms);
+            MessagesList.AddMessage(ms);
         }
 
         public static void SendMessage(string message, string source, List<Player> targets, Color color)
         {
             var ms = new SystemChatMessage(message, source, targets, color);
-            MessageManager.AddMessage(ms);
+            MessagesList.AddMessage(ms);
         }
     }
 }

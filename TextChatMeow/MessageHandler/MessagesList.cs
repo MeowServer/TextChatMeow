@@ -13,11 +13,13 @@ using System.Threading.Tasks;
 
 namespace TextChatMeow
 {
-    internal static class MessageManager
+    /// <summary>
+    /// Contain all of the messages that sent by the player
+    /// Remove the message after the time out
+    /// </summary>
+    internal static class MessagesList
     {
-        private static CoroutineHandle CountdownCoroutine = Timing.RunCoroutine(CountdownMethod());
-
-        private static CustomMessageList<ChatMessage> _messageList = new CustomMessageList<ChatMessage>();
+        private static List<ChatMessage> _messageList = new List<ChatMessage>();
 
         public static ReadOnlyCollection<ChatMessage> messageList
         {
@@ -27,8 +29,11 @@ namespace TextChatMeow
             }
         }
 
+        private static CoroutineHandle CountdownCoroutine = Timing.RunCoroutine(MessageListCoroutineMethod());
+
         public static void AddMessage(ChatMessage ms)
         {
+            Log.Debug("Add Message : " + ms.ToString());
             _messageList.Insert(0, ms);
 
             try
@@ -39,7 +44,12 @@ namespace TextChatMeow
             {
                 
             }
-            
+        }
+
+        public static void RemoveMessage(ChatMessage ms)
+        {
+            Log.Debug("Remove Message : " + ms.ToString());
+            _messageList.Remove(ms);
         }
 
         public static void ClearMessageList(RoundEndedEventArgs ev)
@@ -54,7 +64,7 @@ namespace TextChatMeow
             _messageList.Clear();
         }
 
-        private static IEnumerator<float> CountdownMethod()
+        private static IEnumerator<float> MessageListCoroutineMethod()
         {
             float timeInterval = 1f;
 
@@ -63,7 +73,7 @@ namespace TextChatMeow
                 try
                 {
                     //Debug Info
-                    if(Plugin.instance.Config.Debug && messageList.Count > 0)
+                    if(Plugin.instance != null && Plugin.instance.Config.Debug && messageList.Count > 0)
                     {
                         string DebugInfo = string.Empty;
                         DebugInfo += "\n==============MessageList================\n";
@@ -93,47 +103,18 @@ namespace TextChatMeow
                     //Clear time out messages
                     if (messageList.Count > 0 && Plugin.instance.Config.MessagesDisappears)
                     {
-                        _messageList.RemoveAll(x => DateTime.Now - x.TimeSent >= TimeSpan.FromSeconds(Plugin.instance.Config.MessagesHideTime) );
+                        _messageList?.RemoveAll(x => DateTime.Now - x.TimeSent >= TimeSpan.FromSeconds(Plugin.instance.Config.MessagesHideTime) );
                     }
                     
                 }
                 catch (Exception e)
                 {
+                    Log.Error("Error occured in MessageListCoroutineMethod");
                     Log.Error(e);
                 }
 
                 yield return Timing.WaitForSeconds(timeInterval);//if changes, also change the time in UpdateMessage
             }
-        }
-    }
-
-    internal class CustomMessageList<T> : List<ChatMessage>
-    {
-        public new bool Remove(ChatMessage message)
-        {
-            if (Plugin.instance.Config.Debug)
-            {
-                Log.Debug("Removing Hint From Message List");
-
-                string DebugInfo = string.Empty;
-                DebugInfo += "Total Time Displayed: " + (DateTime.Now - message.TimeSent) + " | ";
-                DebugInfo += $"{message.ToString()}\n";
-
-                Log.Debug(DebugInfo);
-            }
-
-            return base.Remove(message);
-        }
-
-        public new void Clear()
-        {
-            if (Plugin.instance.Config.Debug)
-            {
-                Log.Debug("Clearing Message List");
-            }
-                
-
-            base.Clear();
         }
     }
 }

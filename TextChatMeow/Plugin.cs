@@ -44,8 +44,8 @@ namespace TextChatMeow
             HintServiceMeow.EventHandler.NewPlayer += EventHandler.CreateNewMessageManager;
             Exiled.Events.Handlers.Player.Left += EventHandler.DeleteMessageManager;
 
-            Exiled.Events.Handlers.Server.RestartingRound += MessageManager.ClearMessageList;
-            Exiled.Events.Handlers.Server.RoundEnded += MessageManager.ClearMessageList;
+            Exiled.Events.Handlers.Server.RestartingRound += MessagesList.ClearMessageList;
+            Exiled.Events.Handlers.Server.RoundEnded += MessagesList.ClearMessageList;
 
             base.OnEnabled();
             instance = this;
@@ -56,8 +56,8 @@ namespace TextChatMeow
             HintServiceMeow.EventHandler.NewPlayer -= EventHandler.CreateNewMessageManager;
             Exiled.Events.Handlers.Player.Left -= EventHandler.DeleteMessageManager;
 
-            Exiled.Events.Handlers.Server.RestartingRound -= MessageManager.ClearMessageList;
-            Exiled.Events.Handlers.Server.RoundEnded -= MessageManager.ClearMessageList;
+            Exiled.Events.Handlers.Server.RestartingRound -= MessagesList.ClearMessageList;
+            Exiled.Events.Handlers.Server.RoundEnded -= MessagesList.ClearMessageList;
 
             base.OnDisabled();
             instance = null;

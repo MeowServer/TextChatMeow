@@ -14,7 +14,7 @@ namespace TextChatMeow
     {
         private static List<PlayerMessageHandler> messagesManagers = new List<PlayerMessageHandler>();
 
-        private CoroutineHandle AutoUpdateCoroutine;
+        private static CoroutineHandle AutoUpdateCoroutine = Timing.RunCoroutine(AutoUpdateMethod());
 
         private Player player;
 
@@ -38,8 +38,6 @@ namespace TextChatMeow
 
             timeCreated = DateTime.Now;
 
-            AutoUpdateCoroutine = Timing.RunCoroutine(AutoUpdateMethod(this));
-
             messagesManagers.Add(this);
         }
 
@@ -55,7 +53,7 @@ namespace TextChatMeow
 
             try
             {
-                displayableMessages = MessageManager
+                displayableMessages = MessagesList
                     .messageList
                     .Where(x => x.CanSee(this.player))
                     .ToList();
@@ -119,21 +117,16 @@ namespace TextChatMeow
             }
         }
 
-        public static void UpdateAllMessage()
+        private static IEnumerator<float> AutoUpdateMethod()
         {
-            foreach (var manager in messagesManagers)
-            {
-                manager.UpdateMessage();
-            }
-        }
-
-        private static IEnumerator<float> AutoUpdateMethod(PlayerMessageHandler messageManager)
-        {
-            while (messageManager.player != null && messageManager.player.IsConnected)
+            while (true)
             {
                 try
                 {
-                    messageManager.UpdateMessage();
+                    foreach (var manager in messagesManagers)
+                    {
+                        manager.UpdateMessage();
+                    }
                 }
                 catch (Exception e)
                 {
