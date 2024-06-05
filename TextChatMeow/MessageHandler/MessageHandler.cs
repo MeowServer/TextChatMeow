@@ -140,7 +140,7 @@ namespace TextChatMeow
                     Log.Error(e);
                 }
 
-                yield return Timing.WaitForSeconds(0.1f);//if changes, also change the time in UpdateMessage
+                yield return Timing.WaitForSeconds(0.1f);
             }
         }
     }

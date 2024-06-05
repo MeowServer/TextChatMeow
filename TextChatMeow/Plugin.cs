@@ -45,10 +45,6 @@ namespace TextChatMeow
             Exiled.Events.Handlers.Server.RestartingRound += MessageList.ClearMessagePool;
             Exiled.Events.Handlers.Server.EndingRound += MessageList.ClearMessagePool;
 
-            Exiled.Events.Handlers.Player.ItemAdded += MessageList.UpdateMessagePool;
-            Exiled.Events.Handlers.Player.ItemRemoved += MessageList.UpdateMessagePool;
-            Exiled.Events.Handlers.Player.ChangingRole += MessageList.UpdateMessagePool;
-
             base.OnEnabled();
             instance = this;
         }
@@ -60,10 +56,6 @@ namespace TextChatMeow
 
             Exiled.Events.Handlers.Server.RestartingRound -= MessageList.ClearMessagePool;
             Exiled.Events.Handlers.Server.EndingRound -= MessageList.ClearMessagePool;
-
-            Exiled.Events.Handlers.Player.ItemAdded -= MessageList.UpdateMessagePool;
-            Exiled.Events.Handlers.Player.ItemRemoved -= MessageList.UpdateMessagePool;
-            Exiled.Events.Handlers.Player.ChangingRole -= MessageList.UpdateMessagePool;
 
             base.OnDisabled();
             instance = null;

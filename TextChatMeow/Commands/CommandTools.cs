@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TextChatMeow.Commands
 {
-    public static  class MessageTools
+    public static  class CommandTools
     {
         public static string GetChannelName(ChatMessageType type)
         {

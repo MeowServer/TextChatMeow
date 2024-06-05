@@ -57,7 +57,7 @@ namespace TextChatMeow
 
         public void SendMessage(string str, Player player)
         {
-            str = MessageTools.ClearTags(str);
+            str = CommandTools.ClearTags(str);
             var message = new ProximityChatMessage(str, player);
 
             MessageList.AddMessage(message);
@@ -121,7 +121,7 @@ namespace TextChatMeow
         {
             ((Radio)player.Items.First(x => x.Type == ItemType.Radio)).BatteryLevel--;
 
-            str = MessageTools.ClearTags(str);
+            str = CommandTools.ClearTags(str);
             var message = new RadioChatMessage(str, player);
 
             MessageList.AddMessage(message);
@@ -171,7 +171,7 @@ namespace TextChatMeow
 
         public void SendMessage(string str, Player player)
         {
-            str = MessageTools.ClearTags(str);
+            str = CommandTools.ClearTags(str);
             var message = new PublicChatMessage(str, player);
 
             MessageList.AddMessage(message);
@@ -222,7 +222,7 @@ namespace TextChatMeow
 
         public void SendMessage(string str, Player player)
         {
-            str = MessageTools.ClearTags(str);
+            str = CommandTools.ClearTags(str);
             var message = new TeamChatMessage(str, player);
 
             MessageList.AddMessage(message);
