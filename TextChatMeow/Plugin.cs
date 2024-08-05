@@ -28,6 +28,8 @@ using UnityEngine;
 //      Use regex to clear rich-text tags.
 // V1.3.1
 //      Bug fixing, fixed the bug that the message will be cleared every 2 seconds
+// V1.4.0
+//      Rewrite for HintServiceMeow V5.0.0
 
 namespace TextChatMeow
 {
@@ -37,11 +39,11 @@ namespace TextChatMeow
 
         public override string Name => "TextChatMeow";
         public override string Author => "MeowServerOwner";
-        public override Version Version => new Version(1, 3, 1);
+        public override Version Version => new Version(1, 4, 0);
 
         public override void OnEnabled()
         {
-            HintServiceMeow.EventHandler.NewPlayer += EventHandler.CreateNewMessageManager;
+            Exiled.Events.Handlers.Player.Verified += EventHandler.CreateNewMessageManager;
             Exiled.Events.Handlers.Player.Left += EventHandler.DeleteMessageManager;
 
             Exiled.Events.Handlers.Server.RestartingRound += MessagesList.ClearMessageList;
@@ -53,7 +55,7 @@ namespace TextChatMeow
 
         public override void OnDisabled()
         {
-            HintServiceMeow.EventHandler.NewPlayer -= EventHandler.CreateNewMessageManager;
+            Exiled.Events.Handlers.Player.Verified -= EventHandler.CreateNewMessageManager;
             Exiled.Events.Handlers.Player.Left -= EventHandler.DeleteMessageManager;
 
             Exiled.Events.Handlers.Server.RestartingRound -= MessagesList.ClearMessageList;
@@ -66,9 +68,9 @@ namespace TextChatMeow
 
     public static class EventHandler
     {
-        public static void CreateNewMessageManager(PlayerDisplay playerDisplay)
+        public static void CreateNewMessageManager(VerifiedEventArgs ev)
         {
-            new PlayerMessageHandler(playerDisplay);
+            new PlayerMessageHandler(ev);
         }
 
         public static void DeleteMessageManager(LeftEventArgs ev)

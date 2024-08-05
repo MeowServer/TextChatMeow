@@ -37,10 +37,6 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\SCPSL插件依赖\Dev\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\HintServiceMeow\HintServiceMeow\bin\Debug\Assembly-CSharp-Publicized.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="BouncyCastle.Cryptography">
       <HintPath>..\..\SCPSL插件依赖\Dev\BouncyCastle.Cryptography.dll</HintPath>
     </Reference>
@@ -71,8 +67,9 @@
     <Reference Include="Exiled.Permissions, Version=8.8.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\packages\EXILED.8.8.0\lib\net48\Exiled.Permissions.dll</HintPath>
     </Reference>
-    <Reference Include="HintServiceMeow">
-      <HintPath>..\..\HintServiceMeow\HintServiceMeow\bin\Debug\HintServiceMeow.dll</HintPath>
+    <Reference Include="HintServiceMeow, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\SCPSL-Framework\HintServiceMeow\HintServiceMeow\bin\Debug\HintServiceMeow.dll</HintPath>
     </Reference>
     <Reference Include="LogWritterMeow">
       <HintPath>..\..\LogWritterMeow\LogWritterMeow\bin\Debug\LogWritterMeow.dll</HintPath>

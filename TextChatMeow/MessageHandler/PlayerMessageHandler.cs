@@ -4,46 +4,67 @@ using MEC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+using Exiled.Events.EventArgs.Player;
+using HintServiceMeow.Core.Enum;
+using HintServiceMeow.Core.Utilities;
+using Hint = HintServiceMeow.Core.Models.Hints.Hint;
 
 namespace TextChatMeow
 {
     internal class PlayerMessageHandler
     {
-        private static List<PlayerMessageHandler> messagesManagers = new List<PlayerMessageHandler>();
+        private static Config Config => Plugin.instance.Config;
 
-        private static CoroutineHandle AutoUpdateCoroutine = Timing.RunCoroutine(AutoUpdateMethod());
+        private static readonly List<PlayerMessageHandler> MessagesManagers = new List<PlayerMessageHandler>();
 
-        private Player player;
+        private static CoroutineHandle _autoUpdateCoroutine = Timing.RunCoroutine(AutoUpdateMethod());
 
-        private DateTime timeCreated;
+        private readonly Player _player;
 
-        private HintServiceMeow.Hint TextChatTip = new HintServiceMeow.Hint(580, HintAlignment.Left, Plugin.instance.Config.ChatTip);
-        private List<HintServiceMeow.Hint> MessageSlots = new List<HintServiceMeow.Hint>()
+        private readonly DateTime _timeCreated = DateTime.Now;
+
+        private readonly Hint _textChatTip = new Hint
         {
-            new HintServiceMeow.Hint(600, HintAlignment.Left, ""),
-            new HintServiceMeow.Hint(620, HintAlignment.Left, ""),
-            new HintServiceMeow.Hint(640, HintAlignment.Left, ""),
+            YCoordinate = 700,
+            Alignment = HintAlignment.Left,
         };
 
-        public PlayerMessageHandler(PlayerDisplay playerDisplay)
+        private readonly List<Hint> _messageSlots = new List<Hint>()
         {
-            this.player = playerDisplay.player;
+            new Hint
+            {
+                YCoordinate = 700,
+                Alignment = HintAlignment.Left,
+            },
+            new Hint
+            {
+                YCoordinate = 720,
+                Alignment = HintAlignment.Left,
+            },
+            new Hint
+            {
+                YCoordinate = 740,
+                Alignment = HintAlignment.Left,
+            }
+        };
 
-            //Add hint onto player display
-            playerDisplay.AddHint(TextChatTip);
-            playerDisplay.AddHints(MessageSlots);
+        public PlayerMessageHandler(VerifiedEventArgs ev)
+        {
+            var playerDisplay = PlayerDisplay.Get(ev.Player);
+            this._player = Player.Get(playerDisplay.ReferenceHub);
 
-            timeCreated = DateTime.Now;
+            _textChatTip.Text = Config.ChatTip;
 
-            messagesManagers.Add(this);
+            //Add hint onto _player display
+            playerDisplay.AddHint(_textChatTip);
+            playerDisplay.AddHint(_messageSlots);
+
+            MessagesManagers.Add(this);
         }
 
         public static void RemoveMessageManager(Player player)
         {
-            messagesManagers.RemoveAll(x => x.player == player);
+            MessagesManagers.RemoveAll(x => x._player == player);
         }
 
         public void UpdateMessage()
@@ -55,7 +76,7 @@ namespace TextChatMeow
             {
                 displayableMessages = MessagesList
                     .messageList
-                    .Where(x => x.CanSee(this.player))
+                    .Where(x => x.CanSee(this._player))
                     .ToList();
             }
             catch(Exception ex)
@@ -63,15 +84,15 @@ namespace TextChatMeow
                 Log.Error(ex);
             }
 
-            //Update the message onto player's screen
+            //Update the message onto _player's screen
             try
             {
-                foreach (HintServiceMeow.Hint hint in MessageSlots)
+                foreach (Hint hint in _messageSlots)
                 {
-                    hint.hide = true;
+                    hint.Hide = true;
                 }
 
-                for (var i = 0; i < MessageSlots.Count() && i < displayableMessages.Count(); i++)
+                for (var i = 0; i < _messageSlots.Count() && i < displayableMessages.Count(); i++)
                 {
                     ChatMessage message = displayableMessages[i];
 
@@ -88,8 +109,8 @@ namespace TextChatMeow
 
                     text += new string(' ', message.TimeSent.Second % 10);
 
-                    MessageSlots[i].message = text;
-                    MessageSlots[i].hide = false;
+                    _messageSlots[i].Text = text;
+                    _messageSlots[i].Hide = false;
                 }
             }
             catch (Exception ex)
@@ -102,13 +123,13 @@ namespace TextChatMeow
             {
                 TimeSpan tipTimeToDisplay = TimeSpan.FromSeconds(Plugin.instance.Config.TipDisplayTime);
 
-                if (Plugin.instance.Config.TipDisappears == false||MessageSlots.Any(x => !x.hide) || timeCreated + tipTimeToDisplay >= DateTime.Now)
+                if (Plugin.instance.Config.TipDisappears == false||_messageSlots.Any(x => !x.Hide) || _timeCreated + tipTimeToDisplay >= DateTime.Now)
                 {
-                    TextChatTip.hide = false;
+                    _textChatTip.Hide = false;
                 }
                 else
                 {
-                    TextChatTip.hide = true;
+                    _textChatTip.Hide = true;
                 }
             }
             catch(Exception ex)
@@ -123,7 +144,7 @@ namespace TextChatMeow
             {
                 try
                 {
-                    foreach (var manager in messagesManagers)
+                    foreach (var manager in MessagesManagers)
                     {
                         manager.UpdateMessage();
                     }
