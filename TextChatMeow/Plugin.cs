@@ -70,12 +70,12 @@ namespace TextChatMeow
     {
         public static void CreateNewMessageManager(VerifiedEventArgs ev)
         {
-            new PlayerMessageHandler(ev);
+            new DisplayManager(ev);
         }
 
         public static void DeleteMessageManager(LeftEventArgs ev)
         {
-            PlayerMessageHandler.RemoveMessageManager(ev.Player);
+            DisplayManager.RemoveMessageManager(ev.Player);
         }
     }
 }

@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HintServiceMeow.Core.Enum;
 using UnityEngine;
 
 namespace TextChatMeow
@@ -19,24 +20,27 @@ namespace TextChatMeow
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
 
+        public HintAlignment MessageAlignment { get; set; } = HintAlignment.Left;
+        public float MessageYCoordinate { get; set; } = 800;
+
         [Description("Should the tip disappear after a while?")]
         public bool TipDisappears { get; set; } = true;
-        [Description("Should the message disappear after a while? Do not close this when AddCountDown is active, otherwise error may occur.")]
+        [Description("Should the message disappear after a while? Do not close this when CountDownTip is active, otherwise error may occur.")]
         public bool MessagesDisappears { get; set; } = true;
         [Description("Should the tip have a countdown in front of them? This will only be active when MessagesDisappears is active.")]
-        public bool AddCountDown { get; set; } = false;
+        public bool CountDownTip { get; set; } = false;
 
         [Description("How long should the tip display before it disappears?")]
-        public int TipDisplayTime { get; set; } = 10;
+        public int TipDisappearTime { get; set; } = 10;
         [Description("How long should a message display before it disappears?")]
-        public int MessagesHideTime { get; set; } = 10;
+        public int MessagesDisappearTime { get; set; } = 10;
 
         [Description("Proximity Chat Config\nAllow proximity chat?")]
         public bool AllowProximityChat { get; set; } = true;
         [Description("How far should the message goes?")]
         public int ProximityChatDistance { get; set; } = 20;
         [Description("Allow chat between SCP and Human using proximity chat?")]
-        public bool SCPAndHumanProximityChat { get; set; } = false;
+        public bool ScpAndHumanProximityChat { get; set; } = false;
 
         [Description("Allow chat through radio?")]
         public bool AllowRadioChat { get; set; } = true;
@@ -49,7 +53,7 @@ namespace TextChatMeow
         [Description("Allow spectators chat with alives using public chat?")]
         public bool AllowSpectatorsChatWithPublic { get; set; } = false;
         [Description("Allow chat between SCP and Human using public chat?")]
-        public bool SCPAndHumanPublicChat { get; set; } = false;
+        public bool ScpAndHumanPublicChat { get; set; } = false;
 
         [Description("Translation for chat tip")]
         public string ChatTip { get; set; } = "输入.help查看聊天指令";

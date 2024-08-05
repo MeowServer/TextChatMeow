@@ -309,7 +309,7 @@
     <Compile Include="API\SystemMessageSender.cs" />
     <Compile Include="Commands\IChatCommand.cs" />
     <Compile Include="Commands\CommandTools.cs" />
-    <Compile Include="MessageHandler\PlayerMessageHandler.cs" />
+    <Compile Include="MessageHandler\DisplayManager.cs" />
     <Compile Include="MessageHandler\MessagesList.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Commands\Commands.cs" />

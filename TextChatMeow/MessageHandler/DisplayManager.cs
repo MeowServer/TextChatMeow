@@ -11,11 +11,11 @@ using Hint = HintServiceMeow.Core.Models.Hints.Hint;
 
 namespace TextChatMeow
 {
-    internal class PlayerMessageHandler
+    internal class DisplayManager
     {
         private static Config Config => Plugin.instance.Config;
 
-        private static readonly List<PlayerMessageHandler> MessagesManagers = new List<PlayerMessageHandler>();
+        private static readonly List<DisplayManager> MessagesManagers = new List<DisplayManager>();
 
         private static CoroutineHandle _autoUpdateCoroutine = Timing.RunCoroutine(AutoUpdateMethod());
 
@@ -25,30 +25,30 @@ namespace TextChatMeow
 
         private readonly Hint _textChatTip = new Hint
         {
-            YCoordinate = 700,
-            Alignment = HintAlignment.Left,
+            YCoordinate = Config.MessageYCoordinate,
+            Alignment = Config.MessageAlignment,
         };
 
         private readonly List<Hint> _messageSlots = new List<Hint>()
         {
             new Hint
             {
-                YCoordinate = 700,
-                Alignment = HintAlignment.Left,
+                YCoordinate = Config.MessageYCoordinate + 25,
+                Alignment = Config.MessageAlignment,
             },
             new Hint
             {
-                YCoordinate = 720,
-                Alignment = HintAlignment.Left,
+                YCoordinate = Config.MessageYCoordinate + 50,
+                Alignment = Config.MessageAlignment,
             },
             new Hint
             {
-                YCoordinate = 740,
-                Alignment = HintAlignment.Left,
+                YCoordinate = Config.MessageYCoordinate + 75,
+                Alignment = Config.MessageAlignment,
             }
         };
 
-        public PlayerMessageHandler(VerifiedEventArgs ev)
+        public DisplayManager(VerifiedEventArgs ev)
         {
             var playerDisplay = PlayerDisplay.Get(ev.Player);
             this._player = Player.Get(playerDisplay.ReferenceHub);
@@ -98,9 +98,9 @@ namespace TextChatMeow
 
                     string text = string.Empty;
 
-                    if (Plugin.instance.Config.AddCountDown && Plugin.instance.Config.MessagesDisappears)
+                    if (Plugin.instance.Config.CountDownTip && Plugin.instance.Config.MessagesDisappears)
                     {
-                        int countdown = Plugin.instance.Config.MessagesHideTime - (int)(DateTime.Now - message.TimeSent).TotalSeconds;
+                        int countdown = Plugin.instance.Config.MessagesDisappearTime - (int)(DateTime.Now - message.TimeSent).TotalSeconds;
                         text += $"[{countdown}]";//Add countdown in front of the message (if enabled
                     }
                         
@@ -121,7 +121,7 @@ namespace TextChatMeow
             //Set tip's visibility based on the message's visibility
             try
             {
-                TimeSpan tipTimeToDisplay = TimeSpan.FromSeconds(Plugin.instance.Config.TipDisplayTime);
+                TimeSpan tipTimeToDisplay = TimeSpan.FromSeconds(Plugin.instance.Config.TipDisappearTime);
 
                 if (Plugin.instance.Config.TipDisappears == false||_messageSlots.Any(x => !x.Hide) || _timeCreated + tipTimeToDisplay >= DateTime.Now)
                 {

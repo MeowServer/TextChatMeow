@@ -145,7 +145,7 @@ namespace TextChatMeow
                     continue;
                 }
 
-                if (!Plugin.instance.Config.SCPAndHumanProximityChat)
+                if (!Plugin.instance.Config.ScpAndHumanProximityChat)
                 {
                     if (sender.Role.Team == Team.SCPs && player.Role.Team != Team.SCPs)
                     {
@@ -274,7 +274,7 @@ namespace TextChatMeow
         {
             if (receiver == null) return false;
             if (sendFromDead != receiver.IsDead && !Plugin.instance.Config.AllowSpectatorsChatWithPublic) return false;
-            if (sendFromSCP != receiver.IsScp && !Plugin.instance.Config.SCPAndHumanPublicChat) return false;
+            if (sendFromSCP != receiver.IsScp && !Plugin.instance.Config.ScpAndHumanPublicChat) return false;
 
             return true;
         }

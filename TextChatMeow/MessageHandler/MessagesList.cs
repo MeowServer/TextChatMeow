@@ -88,7 +88,7 @@ namespace TextChatMeow
 
                         foreach(var message in messageList)
                         {
-                            if(DateTime.Now - message.TimeSent >= TimeSpan.FromSeconds(Plugin.instance.Config.MessagesHideTime))
+                            if(DateTime.Now - message.TimeSent >= TimeSpan.FromSeconds(Plugin.instance.Config.MessagesDisappearTime))
                             {
                                 DebugInfo += "Total Time Displayed: " + (DateTime.Now - message.TimeSent) + " | ";
                                 DebugInfo += $"{message.ToString()}\n";
@@ -103,7 +103,7 @@ namespace TextChatMeow
                     //Clear time out messages
                     if (messageList.Count > 0 && Plugin.instance.Config.MessagesDisappears)
                     {
-                        _messageList?.RemoveAll(x => DateTime.Now - x.TimeSent >= TimeSpan.FromSeconds(Plugin.instance.Config.MessagesHideTime) );
+                        _messageList?.RemoveAll(x => DateTime.Now - x.TimeSent >= TimeSpan.FromSeconds(Plugin.instance.Config.MessagesDisappearTime) );
                     }
                     
                 }
