@@ -1,65 +1,68 @@
 ﻿using Exiled.API.Features;
-using HintServiceMeow;
 using MEC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Exiled.Events.EventArgs.Player;
-using HintServiceMeow.Core.Enum;
 using HintServiceMeow.Core.Utilities;
+using TextChatMeow.Model;
 using Hint = HintServiceMeow.Core.Models.Hints.Hint;
+using HintServiceMeow.Core.Enum;
 
-namespace TextChatMeow
+namespace TextChatMeow.MessageHandler
 {
     internal class DisplayManager
     {
-        private static Config Config => Plugin.instance.Config;
+        private static Config Config => Plugin.Instance.Config;
 
         private static readonly List<DisplayManager> MessagesManagers = new List<DisplayManager>();
-
-        private static CoroutineHandle _autoUpdateCoroutine = Timing.RunCoroutine(AutoUpdateMethod());
-
-        private readonly Player _player;
-
-        private readonly DateTime _timeCreated = DateTime.Now;
+        private static CoroutineHandle _autoUpdateCoroutine;
 
         private readonly Hint _textChatTip = new Hint
         {
+            Text = Config.ChatTip,
             YCoordinate = Config.MessageYCoordinate,
             Alignment = Config.MessageAlignment,
         };
-
         private readonly List<Hint> _messageSlots = new List<Hint>()
         {
             new Hint
             {
                 YCoordinate = Config.MessageYCoordinate + 25,
                 Alignment = Config.MessageAlignment,
+                SyncSpeed = HintSyncSpeed.Fast
             },
             new Hint
             {
                 YCoordinate = Config.MessageYCoordinate + 50,
                 Alignment = Config.MessageAlignment,
+                SyncSpeed = HintSyncSpeed.Fast
             },
             new Hint
             {
                 YCoordinate = Config.MessageYCoordinate + 75,
                 Alignment = Config.MessageAlignment,
+                SyncSpeed = HintSyncSpeed.Fast
             }
         };
 
+        private readonly DateTime _timeCreated = DateTime.Now;
+        private readonly TimeSpan _tipTimeToDisplay = TimeSpan.FromSeconds(Plugin.Instance.Config.TipDisappearTime);
+
+        private readonly Player _player;
+
         public DisplayManager(VerifiedEventArgs ev)
         {
+            this._player = ev.Player;
+
             var playerDisplay = PlayerDisplay.Get(ev.Player);
-            this._player = Player.Get(playerDisplay.ReferenceHub);
-
-            _textChatTip.Text = Config.ChatTip;
-
-            //Add hint onto _player display
             playerDisplay.AddHint(_textChatTip);
             playerDisplay.AddHint(_messageSlots);
 
             MessagesManagers.Add(this);
+
+            if(!_autoUpdateCoroutine.IsRunning)
+                _autoUpdateCoroutine = Timing.RunCoroutine(AutoUpdateMethod());
         }
 
         public static void RemoveMessageManager(Player player)
@@ -69,61 +72,40 @@ namespace TextChatMeow
 
         public void UpdateMessage()
         {
-            //Get all the message that should be display
-            List<ChatMessage> displayableMessages = new List<ChatMessage>();
-
             try
             {
-                displayableMessages = MessagesList
-                    .messageList
-                    .Where(x => x.CanSee(this._player))
-                    .ToList();
-            }
-            catch(Exception ex)
-            {
-                Log.Error(ex);
-            }
+                IEnumerable<AbstractChatMessage>  displayableMessages = MessagesList.MessageList
+                    .Where(x => x.IsVisible(this._player));
 
-            //Update the message onto _player's screen
-            try
-            {
-                foreach (Hint hint in _messageSlots)
+                _messageSlots.ForEach(hint => hint.Hide = true);
+
+                using(var enumerator = displayableMessages.GetEnumerator())
                 {
-                    hint.Hide = true;
-                }
-
-                for (var i = 0; i < _messageSlots.Count() && i < displayableMessages.Count(); i++)
-                {
-                    ChatMessage message = displayableMessages[i];
-
-                    string text = string.Empty;
-
-                    if (Plugin.instance.Config.CountDownTip && Plugin.instance.Config.MessagesDisappears)
+                    for (var i = 0; i < _messageSlots.Count && enumerator.MoveNext(); i++)
                     {
-                        int countdown = Plugin.instance.Config.MessagesDisappearTime - (int)(DateTime.Now - message.TimeSent).TotalSeconds;
-                        text += $"[{countdown}]";//Add countdown in front of the message (if enabled
+                        AbstractChatMessage message = enumerator.Current;
+
+                        if(message == null)
+                            continue;
+
+                        int countDown = Plugin.Instance.Config.MessagesDisappearTime - (int)(DateTime.Now - message.TimeSent).TotalSeconds;
+
+                        string text = Plugin.Instance.Config.ChatMessageTemplate
+                            .Replace("{CountDown}", countDown.ToString())
+                            .Replace("{ChannelColor}", Plugin.Instance.Translation.ChannelsColor[message.Type].ToHex())
+                            .Replace("{ChannelName}", Plugin.Instance.Translation.ChannelsName[message.Type])
+                            .Replace("{RoleColor}", message.SenderRoleColor.ToHex())
+                            .Replace("{RoleName}", Plugin.Instance.Translation.RoleName[message.SenderRoleType])
+                            .Replace("{Message}", message.Text);
+
+                        _messageSlots[i].Text = text;
+                        _messageSlots[i].Hide = false;
                     }
-                        
-
-                    text += message.text;
-
-                    text += new string(' ', message.TimeSent.Second % 10);
-
-                    _messageSlots[i].Text = text;
-                    _messageSlots[i].Hide = false;
                 }
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex);
-            }
 
-            //Set tip's visibility based on the message's visibility
-            try
-            {
-                TimeSpan tipTimeToDisplay = TimeSpan.FromSeconds(Plugin.instance.Config.TipDisappearTime);
-
-                if (Plugin.instance.Config.TipDisappears == false||_messageSlots.Any(x => !x.Hide) || _timeCreated + tipTimeToDisplay >= DateTime.Now)
+                if (Plugin.Instance.Config.TipDisappears == false||
+                    _messageSlots.Any(x => !x.Hide) ||
+                    _timeCreated + _tipTimeToDisplay >= DateTime.Now)
                 {
                     _textChatTip.Hide = false;
                 }
@@ -131,6 +113,7 @@ namespace TextChatMeow
                 {
                     _textChatTip.Hide = true;
                 }
+
             }
             catch(Exception ex)
             {
@@ -154,7 +137,7 @@ namespace TextChatMeow
                     Log.Error(e);
                 }
 
-                yield return Timing.WaitForSeconds(0.1f);
+                yield return Timing.WaitForSeconds(0.5f);
             }
         }
     }

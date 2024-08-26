@@ -1,16 +1,7 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
-using Exiled.Events.EventArgs.Server;
-using HintServiceMeow;
-using MEC;
-using PluginAPI.Events;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.Collections;
-using UnityEngine;
+using TextChatMeow.MessageHandler;
 
 //  V1.2.0
 //      fixing bugs
@@ -25,21 +16,24 @@ using UnityEngine;
 // V1.2.5
 //      Use DateTime instead of count down. Bug fixing
 // V1.3.0
-//      Use regex to clear rich-text tags.
+//      Use regex to clear rich-Text tags.
 // V1.3.1
 //      Bug fixing, fixed the bug that the message will be cleared every 2 seconds
 // V1.4.0
 //      Rewrite for HintServiceMeow V5.0.0
+// V1.4.1
+//      Add translation support
+//      Improve code quality
 
 namespace TextChatMeow
 {
-    internal class Plugin : Plugin<Config>
+    internal class Plugin : Plugin<Config, Translation>
     {
-        public static Plugin instance { get; set; }
+        public static Plugin Instance { get; set; }
 
         public override string Name => "TextChatMeow";
         public override string Author => "MeowServerOwner";
-        public override Version Version => new Version(1, 4, 0);
+        public override Version Version => new Version(1, 4, 1);
 
         public override void OnEnabled()
         {
@@ -50,7 +44,7 @@ namespace TextChatMeow
             Exiled.Events.Handlers.Server.RoundEnded += MessagesList.ClearMessageList;
 
             base.OnEnabled();
-            instance = this;
+            Instance = this;
         }
 
         public override void OnDisabled()
@@ -62,7 +56,7 @@ namespace TextChatMeow
             Exiled.Events.Handlers.Server.RoundEnded -= MessagesList.ClearMessageList;
 
             base.OnDisabled();
-            instance = null;
+            Instance = null;
         }
     }
 
@@ -70,7 +64,7 @@ namespace TextChatMeow
     {
         public static void CreateNewMessageManager(VerifiedEventArgs ev)
         {
-            new DisplayManager(ev);
+            _ = new DisplayManager(ev);
         }
 
         public static void DeleteMessageManager(LeftEventArgs ev)
