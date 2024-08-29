@@ -24,6 +24,8 @@ using TextChatMeow.MessageHandler;
 // V1.4.1
 //      Add translation support
 //      Improve code quality
+// V1.4.2
+//      Fix the bug that the message template did not include sender's nickname
 
 namespace TextChatMeow
 {
@@ -33,7 +35,7 @@ namespace TextChatMeow
 
         public override string Name => "TextChatMeow";
         public override string Author => "MeowServerOwner";
-        public override Version Version => new Version(1, 4, 1);
+        public override Version Version => new Version(1, 4, 2);
 
         public override void OnEnabled()
         {

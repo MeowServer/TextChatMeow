@@ -13,7 +13,7 @@ namespace TextChatMeow
         public string ChatTip { get; set; } = "输入.help查看聊天指令";
 
         [Description("Template for chat message")]
-        public string ChatMessageTemplate { get; set; } = "[{CountDown}]<color={ChannelColor}>[{ChannelName}]</color><color={RoleColor}>[{RoleName}]</color>:{Message}";
+        public string ChatMessageTemplate { get; set; } = "{PlayerName}:[{CountDown}]<color={ChannelColor}>[{ChannelName}]</color><color={RoleColor}>[{RoleName}]</color>:{Message}";
 
         [Description("Position of message slots")]
         public HintAlignment MessageAlignment { get; set; } = HintAlignment.Left;

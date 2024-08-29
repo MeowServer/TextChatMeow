@@ -91,6 +91,7 @@ namespace TextChatMeow.MessageHandler
                         int countDown = Plugin.Instance.Config.MessagesDisappearTime - (int)(DateTime.Now - message.TimeSent).TotalSeconds;
 
                         string text = Plugin.Instance.Config.ChatMessageTemplate
+                            .Replace("{PlayerName}", message.SenderNickname)
                             .Replace("{CountDown}", countDown.ToString())
                             .Replace("{ChannelColor}", Plugin.Instance.Translation.ChannelsColor[message.Type].ToHex())
                             .Replace("{ChannelName}", Plugin.Instance.Translation.ChannelsName[message.Type])
