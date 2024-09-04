@@ -26,6 +26,8 @@ using TextChatMeow.MessageHandler;
 //      Improve code quality
 // V1.4.2
 //      Fix the bug that the message template did not include sender's nickname
+// V1.4.3
+//      Make it work with a newer version of log writer.
 
 namespace TextChatMeow
 {
