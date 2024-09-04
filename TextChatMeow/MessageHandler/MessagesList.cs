@@ -24,7 +24,7 @@ namespace TextChatMeow
         {
             MessageList.AddFirst(ms);
 
-            LogWritterMeow.Logger.Info(ms.Text);
+            LogWriterMeow.Logger.Info(ms.ToString(), "TextChatMeow");
         }
 
         public static void RemoveMessage(AbstractChatMessage ms)

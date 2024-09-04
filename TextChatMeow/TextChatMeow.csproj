@@ -71,9 +71,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\SCPSL-Framework\HintServiceMeow\HintServiceMeow\bin\Debug\HintServiceMeow.dll</HintPath>
     </Reference>
-    <Reference Include="LogWritterMeow, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SCPSL-Framework\LogWritterMeow\LogWritterMeow\bin\Debug\LogWritterMeow.dll</HintPath>
+    <Reference Include="LogWriterMeow">
+      <HintPath>..\..\..\SCPSL-Framework\LogWritterMeow\LogWritterMeow\bin\Debug\LogWriterMeow.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
       <HintPath>..\..\SCPSL插件依赖\Dev\Mirror.dll</HintPath>

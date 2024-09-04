@@ -20,11 +20,9 @@ namespace TextChatMeow.Model
 
         public override string ToString()
         {
-            return $"TimeSent: {TimeSent} | Type: {Type} | SenderNickname: {SenderNickname} | SenderRoleType: {SenderRoleType}";
+            return $"Text: {Text} | TimeSent: {TimeSent} | Type: {Type} | SenderNickname: {SenderNickname} | SenderRoleType: {SenderRoleType}";
         }
 
         public abstract bool IsVisible(Player receiver);
     }
-
-
 }
