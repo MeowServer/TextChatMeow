@@ -1,7 +1,7 @@
 ### Projetado para os Servidores Meow~
 - [English](https://github.com/MeowServer/TextChatMeow/blob/main/README.md)
 - [中文](https://github.com/MeowServer/TextChatMeow/blob/main/README_Zh.md)
-- [Brazilian](https://github.com/MeowServer/TextChatMeow/blob/main/README_Br.md)
+- [Português](https://github.com/MeowServer/TextChatMeow/blob/main/README_Br.md)
 # Text Chat
 Esse plug-in do EXILED para o SCP: Secret Laboratory permite que jogadores conversem através do console do jogo.
 #  Configuração
