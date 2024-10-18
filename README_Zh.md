@@ -1,4 +1,3 @@
-### Meow服务器设计~
 - [English](https://github.com/MeowServer/TextChatMeow/blob/main/README.md)
 - [中文](https://github.com/MeowServer/TextChatMeow/blob/main/README_Zh.md)
 - [Português](https://github.com/MeowServer/TextChatMeow/blob/main/README_Br.md)
