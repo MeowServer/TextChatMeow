@@ -1,6 +1,5 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
-using System;
 using TextChatMeow.MessageHandler;
 
 //  V1.2.0
@@ -33,11 +32,11 @@ namespace TextChatMeow
 {
     internal class Plugin : Plugin<Config, Translation>
     {
-        public static Plugin Instance { get; set; }
+        public static Plugin Instance { get; set; } = new();
 
         public override string Name => "TextChatMeow";
         public override string Author => "MeowServerOwner";
-        public override Version Version => new Version(1, 4, 2);
+        public override Version Version => new (1, 4, 2);
 
         public override void OnEnabled()
         {
@@ -60,7 +59,9 @@ namespace TextChatMeow
             Exiled.Events.Handlers.Server.RoundEnded -= MessagesList.ClearMessageList;
 
             base.OnDisabled();
+#pragma warning disable CS8625 //null。
             Instance = null;
+#pragma warning restore CS8625 //null。
         }
     }
 

@@ -1,9 +1,8 @@
-﻿using CommandSystem;
+using CommandSystem;
 using Exiled.API.Features.Items;
-using System;
-using System.Linq;
 using Exiled.API.Features;
 using TextChatMeow.Model;
+using TextChatMeow.MessageHandler;
 
 namespace TextChatMeow.Commands
 {
@@ -12,7 +11,7 @@ namespace TextChatMeow.Commands
     {
         public string Command => "RadioChat";
 
-        public string[] Aliases => new[] { "rc" };
+        public string[] Aliases => ["rc"];
 
         public string Description => Plugin.Instance.Translation.RadioChatDescription;
 
@@ -23,7 +22,7 @@ namespace TextChatMeow.Commands
             if (!CheckPermission(player, out response))
                 return false;
 
-            var message = string.Join(" ", arguments.ToArray());
+            var message = string.Join(" ", [.. arguments]);
             SendMessage(message, player);
 
             response = Plugin.Instance.Translation.ResponseWhenSend.Replace("{Message}", message);

@@ -1,12 +1,9 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs.Server;
 using MEC;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using TextChatMeow.Model;
 
-namespace TextChatMeow
+namespace TextChatMeow.MessageHandler
 {
     /// <summary>
     /// Contain all the messages that sent by the player
@@ -32,7 +29,7 @@ namespace TextChatMeow
             MessageList.Remove(ms);
         }
 
-        public static void ClearMessageList(RoundEndedEventArgs ev)
+        public static void ClearMessageList(RoundEndedEventArgs __)
         {
             MessageList.Clear();
         }
