@@ -1,7 +1,6 @@
-﻿using Exiled.API.Features;
-using Exiled.Events.EventArgs.Player;
+﻿using LabApi.Features;
+using LabApi.Loader.Features.Plugins;
 using System;
-using TextChatMeow.MessageHandler;
 
 //  V1.2.0
 //      fixing bugs
@@ -28,52 +27,36 @@ using TextChatMeow.MessageHandler;
 //      Fix the bug that the message template did not include sender's nickname
 // V1.4.3
 //      Make it work with a newer version of log writer.
+// V2.0.0
+//      Rewrite the code for better compabitility and extensibility.
 
 namespace TextChatMeow
 {
-    internal class Plugin : Plugin<Config, Translation>
+    internal class TextChatPlugin : Plugin<Config>
     {
         public static Plugin Instance { get; set; }
 
-        public override string Name => "TextChatMeow";
-        public override string Author => "MeowServerOwner";
-        public override Version Version => new Version(1, 4, 2);
+        // The name of the plugin
+        public override string Name { get; } = "TextChatMeow";
 
-        public override void OnEnabled()
+        // The description of the plugin
+        public override string Description { get; } = "";
+
+        // The author of the plugin
+        public override string Author { get; } = "MeowServerOwner";
+
+        // The current version of the plugin
+        public override Version Version { get; } = new Version(1, 0, 0, 0);
+
+        // The required version of LabAPI (usually the version the plugin was built with)
+        public override Version RequiredApiVersion { get; } = new(LabApiProperties.CompiledVersion);
+
+        public override void Enable()
         {
-            Exiled.Events.Handlers.Player.Verified += EventHandler.CreateNewMessageManager;
-            Exiled.Events.Handlers.Player.Left += EventHandler.DeleteMessageManager;
-
-            Exiled.Events.Handlers.Server.RestartingRound += MessagesList.ClearMessageList;
-            Exiled.Events.Handlers.Server.RoundEnded += MessagesList.ClearMessageList;
-
-            base.OnEnabled();
-            Instance = this;
         }
 
-        public override void OnDisabled()
+        public override void Disable()
         {
-            Exiled.Events.Handlers.Player.Verified -= EventHandler.CreateNewMessageManager;
-            Exiled.Events.Handlers.Player.Left -= EventHandler.DeleteMessageManager;
-
-            Exiled.Events.Handlers.Server.RestartingRound -= MessagesList.ClearMessageList;
-            Exiled.Events.Handlers.Server.RoundEnded -= MessagesList.ClearMessageList;
-
-            base.OnDisabled();
-            Instance = null;
-        }
-    }
-
-    public static class EventHandler
-    {
-        public static void CreateNewMessageManager(VerifiedEventArgs ev)
-        {
-            _ = new DisplayManager(ev);
-        }
-
-        public static void DeleteMessageManager(LeftEventArgs ev)
-        {
-            DisplayManager.RemoveMessageManager(ev.Player);
         }
     }
 }

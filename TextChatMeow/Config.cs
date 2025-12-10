@@ -1,58 +1,41 @@
-﻿using Exiled.API.Interfaces;
-using System.ComponentModel;
-using HintServiceMeow.Core.Enum;
+﻿using PlayerRoles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace TextChatMeow
 {
-    public class Config : IConfig
+    internal class Config
     {
-        public bool IsEnabled { get; set; } = true;
-        public bool Debug { get; set; } = false;
-
-        [Description("Translation for chat tip")]
-        public string ChatTip { get; set; } = "输入.help查看聊天指令";
-
-        [Description("Template for chat message")]
-        public string ChatMessageTemplate { get; set; } = "{PlayerName}:[{CountDown}]<color={ChannelColor}>[{ChannelName}]</color><color={RoleColor}>[{RoleName}]</color>:{Message}";
-
-        [Description("Position of message slots")]
-        public HintAlignment MessageAlignment { get; set; } = HintAlignment.Left;
-        public float MessageYCoordinate { get; set; } = 800;
-
-        [Description("Should the tip disappear after a while?")]
-        public bool TipDisappears { get; set; } = true;
-        [Description("Should the message disappear after a while? Do not close this when useing CountDown tag in your template, otherwise error may occur.")]
-        public bool MessagesDisappears { get; set; } = true;
-
-        [Description("If use TipDisappears, how long should the tip display before it disappears?")]
-        public int TipDisappearTime { get; set; } = 10;
-        [Description("If use MessagesDisappears, how long should a message display before it disappears?")]
-        public int MessagesDisappearTime { get; set; } = 10;
-
-        [Description(
-            "==============Proximity Chat==============\n" +
-            "Allow proximity chat?")]
-        public bool AllowProximityChat { get; set; } = true;
-        [Description("How far should the message goes?")]
-        public int ProximityChatDistance { get; set; } = 20;
-        [Description("Allow chat between SCP and Human using proximity chat?")]
-        public bool ScpAndHumanProximityChat { get; set; } = false;
-
-        [Description(
-            "==============Radio Chat==============\n" + 
-            "Allow chat through radio?")]
-        public bool AllowRadioChat { get; set; } = true;
-
-        [Description("==============Team Chat==============\n" +
-                     "Allow chat with teammate?")]
-        public bool AllowTeamChat { get; set; } = false;
-
-        [Description("==============Public Chat==============\n" +
-            "Allow chat with everyone?")]
-        public bool AllowPublicChat { get; set; } = false;
-        [Description("Allow spectators chat with alives using public chat?")]
-        public bool AllowSpectatorsChat { get; set; } = false;
-        [Description("Allow chat between SCP and Human using public chat?")]
-        public bool AllowScpAndHumanChat { get; set; } = false;
+        public Dictionary<RoleTypeId, string> RoleName { get; set; } = new Dictionary<RoleTypeId, string>()
+        {
+            { RoleTypeId.None, "无角色"},
+            { RoleTypeId.Scp173, "Scp173"},
+            { RoleTypeId.ClassD, "D级人员"},
+            { RoleTypeId.Spectator, "观察者"},
+            { RoleTypeId.Scp106, "Scp106"},
+            { RoleTypeId.NtfSpecialist, "九尾狐收容专家"},
+            { RoleTypeId.Scp049, "Scp049"},
+            { RoleTypeId.Scientist, "科学家"},
+            { RoleTypeId.Scp079, "Scp079"},
+            { RoleTypeId.ChaosConscript, "混沌征召兵"},
+            { RoleTypeId.Scp096, "Scp096"},
+            { RoleTypeId.Scp0492, "Scp049-2"},
+            { RoleTypeId.NtfSergeant, "九尾狐中士"},
+            { RoleTypeId.NtfCaptain, "九尾狐队长"},
+            { RoleTypeId.NtfPrivate, "九尾狐列兵"},
+            { RoleTypeId.Tutorial, "教程人员"},
+            { RoleTypeId.FacilityGuard, "设施警卫"},
+            { RoleTypeId.Scp939, "Scp939"},
+            { RoleTypeId.CustomRole, "自定义角色"},
+            { RoleTypeId.ChaosRifleman, "混沌步枪兵"},
+            { RoleTypeId.ChaosMarauder, "混沌掠夺者"},
+            { RoleTypeId.ChaosRepressor, "混沌压制者"},
+            { RoleTypeId.Overwatch, "角色Overwatch"},
+            { RoleTypeId.Filmmaker, "摄像机"},
+            { RoleTypeId.Scp3114, "Scp3114"},
+        };
     }
 }
