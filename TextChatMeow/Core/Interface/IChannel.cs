@@ -7,7 +7,7 @@ using TextChatMeow.Core.Models;
 
 namespace TextChatMeow.Core.Interface
 {
-    internal interface IChannel
+    public interface IChannel
     {
         /// <summary>
         /// Gets the unique identifier for this instance.
