@@ -26,10 +26,12 @@ namespace TextChatMeow.Core
         /// </summary>
         private Dictionary<string, IChannel> _channels = new Dictionary<string, IChannel>();
 
+        private List<IChatOutput> _outputs = new List<IChatOutput>();
+
         public void RegisterMiddleware(IMiddleware middleware)
         {
             if (_middlewares.Contains(middleware))
-                return;
+                throw new InvalidOperationException($"Middleware of type '{middleware.GetType().Name}' is already registered.");
 
             _middlewares.Add(middleware);
 
@@ -44,6 +46,36 @@ namespace TextChatMeow.Core
         public void UnregisterMiddleware<T>() where T : IMiddleware
         {
             _middlewares.RemoveAll(m => m is T);
+        }
+
+        public void RegisterChannel(IChannel channel)
+        {
+            if (_channels.ContainsKey(channel.Id))
+                throw new InvalidOperationException($"Channel with id '{channel.Id}' is already registered.");
+
+            _channels.Add(channel.Id, channel);
+        }
+
+        public void UnregisterChannel(string channelId)
+        {
+            _channels.Remove(channelId);
+        }
+
+        public void RegisterOutput(IChatOutput output)
+        {
+            if (_outputs.Contains(output))
+                return;
+            _outputs.Add(output);
+        }
+
+        public void UnregisterOutput(IChatOutput output)
+        {
+            _outputs.Remove(output);
+        }
+
+        public void UnregisterOutput<T>() where T : IChatOutput
+        {
+            _outputs.RemoveAll(o => o is T);
         }
 
         public bool SendMessage(ReferenceHub sender, string channelId, string message)

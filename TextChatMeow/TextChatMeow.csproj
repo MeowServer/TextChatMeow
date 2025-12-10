@@ -36,6 +36,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="Core\ChatCore.cs" />
     <Compile Include="Core\Interface\IChannel.cs" />
+    <Compile Include="Core\Interface\IChatOutput.cs" />
     <Compile Include="Core\Interface\IMiddleware.cs" />
     <Compile Include="Core\Models\ChatContext.cs" />
     <Compile Include="Core\Models\ChatMessage.cs" />

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TextChatMeow.Core.Models
 {
     /// <summary>
-    /// Used in middleware to pass chat context information
+    /// Represent the context of a chat message being processed. Includes the message itself
     /// </summary>
     public class ChatContext
     {
