@@ -12,12 +12,22 @@ namespace TextChatMeow.Core.Models
     public class ChatMessage
     {
         /// <summary>
-        /// Gets the sender of the message
+        /// Gets the unique identifier associated with this message.
         /// </summary>
-        public ReferenceHub Sender { get; }
+        public Guid Guid { get; } = Guid.NewGuid();
 
         /// <summary>
-        /// Gets the raw content of the message
+        /// Gets the display name of the sender. This value could be the nickname of the player, name of plugin, or the server.
+        /// </summary>
+        public string SenderDisplayedName { get; }
+
+        /// <summary>
+        /// Gets the unique identifier of the sender. This value will be the user ID of the player, or empty if the sender is not a player.
+        /// </summary>
+        public string SenderUserId { get; }
+
+        /// <summary>
+        /// Gets the raw content of the message.
         /// </summary>
         public string RawContent { get; }
 
@@ -28,6 +38,11 @@ namespace TextChatMeow.Core.Models
         public string DisplayContent { get; set; }
 
         /// <summary>
+        /// Gets the date and time at which the message was created.
+        /// </summary>
+        public DateTime Timestamp { get; } = DateTime.Now;
+
+        /// <summary>
         /// Gets or sets a collection of key-value pairs that store additional metadata associated with the object.
         /// </summary>
         /// <remarks>The metadata dictionary can be used to attach arbitrary information to the object at
@@ -36,9 +51,10 @@ namespace TextChatMeow.Core.Models
         /// scenario.</remarks>
         public Dictionary<string, object> Metadata { get; set; } = new Dictionary<string, object>();
 
-        public ChatMessage(ReferenceHub sender, string rawContent)
+        public ChatMessage(string senderNickname, string senderUserId, string rawContent)
         {
-            Sender = sender;
+            SenderDisplayedName = senderNickname;
+            SenderUserId = senderUserId;
             RawContent = rawContent;
             DisplayContent = rawContent; // Default to raw content
         }

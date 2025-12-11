@@ -1,6 +1,7 @@
 ﻿using GameCore;
 using LabApi.Features.Console;
 using LabApi.Features.Wrappers;
+using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,6 +29,13 @@ namespace TextChatMeow.Core
 
         private List<IChatOutput> _outputs = new List<IChatOutput>();
 
+        /// <summary>
+        /// Registers the specified middleware component in the processing pipeline.
+        /// </summary>
+        /// <remarks>Middleware components are executed in order of their priority. Registering the same
+        /// middleware instance or type more than once is not allowed.</remarks>
+        /// <param name="middleware">The middleware instance to add. Must not already be registered.</param>
+        /// <exception cref="InvalidOperationException">Thrown if a middleware of the same type is already registered.</exception>
         public void RegisterMiddleware(IMiddleware middleware)
         {
             if (_middlewares.Contains(middleware))
@@ -38,16 +46,31 @@ namespace TextChatMeow.Core
             _middlewares = _middlewares.OrderBy(m => m.Priority).ToList();
         }
 
+        /// <summary>
+        /// Unregisters a middleware component so that it is no longer invoked in the processing pipeline.
+        /// </summary>
+        /// <param name="middleware">The middleware instance to remove from the pipeline. Cannot be null.</param>
         public void UnregisterMiddleware(IMiddleware middleware)
         {
             _middlewares.Remove(middleware);
         }
 
+        /// <summary>
+        /// Unregisters all middleware components of the specified type from the middleware pipeline.
+        /// </summary>
+        /// <remarks>Use this method to remove all instances of a specific middleware type from the
+        /// pipeline. This can be useful when dynamically modifying the middleware configuration at runtime.</remarks>
+        /// <typeparam name="T">The type of middleware to remove. Must implement the IMiddleware interface.</typeparam>
         public void UnregisterMiddleware<T>() where T : IMiddleware
         {
             _middlewares.RemoveAll(m => m is T);
         }
 
+        /// <summary>
+        /// Registers the specified channel for use with the system.
+        /// </summary>
+        /// <param name="channel">The channel to register. Cannot be null. The channel's Id must be unique among all registered channels.</param>
+        /// <exception cref="InvalidOperationException">Thrown if a channel with the same Id is already registered.</exception>
         public void RegisterChannel(IChannel channel)
         {
             if (_channels.ContainsKey(channel.Id))
@@ -56,11 +79,19 @@ namespace TextChatMeow.Core
             _channels.Add(channel.Id, channel);
         }
 
+        /// <summary>
+        /// Unregisters the channel with the specified identifier, removing it from the collection of active channels.
+        /// </summary>
+        /// <param name="channelId">The unique identifier of the channel to unregister. Cannot be null.</param>
         public void UnregisterChannel(string channelId)
         {
             _channels.Remove(channelId);
         }
 
+        /// <summary>
+        /// Registers an output target to receive chat messages from this instance.
+        /// </summary>
+        /// <param name="output">The output target to add. Cannot be null. If the output is already registered, this method has no effect.</param>
         public void RegisterOutput(IChatOutput output)
         {
             if (_outputs.Contains(output))
@@ -68,27 +99,51 @@ namespace TextChatMeow.Core
             _outputs.Add(output);
         }
 
+        /// <summary>
+        /// Unregisters the specified chat output so that it no longer receives messages.
+        /// </summary>
+        /// <param name="output">The chat output instance to remove from the list of registered outputs. Cannot be null.</param>
         public void UnregisterOutput(IChatOutput output)
         {
             _outputs.Remove(output);
         }
 
+        /// <summary>
+        /// Unregisters all output handlers of the specified type from the chat system.
+        /// </summary>
+        /// <remarks>Use this method to remove all registered outputs of a given type. After calling this
+        /// method, messages will no longer be sent to outputs of type T. This operation affects all instances of the
+        /// specified type that have been registered.</remarks>
+        /// <typeparam name="T">The type of output handler to unregister. Must implement the IChatOutput interface.</typeparam>
         public void UnregisterOutput<T>() where T : IChatOutput
         {
             _outputs.RemoveAll(o => o is T);
         }
 
-        public bool SendMessage(ReferenceHub sender, string channelId, string message)
+        /// <summary>
+        /// Attempts to send a chat message from the specified sender to the given channel. The message may be processed
+        /// or cancelled by middleware before delivery.
+        /// </summary>
+        /// <remarks>If the specified channel does not exist or if any middleware cancels the message, the
+        /// method returns false and the message is not delivered. Middleware may modify or cancel the message before it
+        /// is sent to recipients.</remarks>
+        /// <param name="channelId">The identifier of the channel to which the message should be sent. Must refer to a registered channel.</param>
+        /// <param name="message">The content of the chat message to send.</param>
+        /// <param name="senderNickname">The display name of the player, plugin, or server sending the message. </param>
+        /// <param name="senderUserId">The unique identifier of the player sending the message. If this is sent by plugin or server, this value should be empty string.</param>
+        /// <returns>true if the message was successfully delivered to the channel; otherwise, false.</returns>
+        internal bool SendMessage(string channelId, string message, string senderNickname, string senderUserId)
         {
-            var player = Player.Get(sender);
+            if(string.IsNullOrEmpty(message))
+                throw new ArgumentException("Message content cannot be null or empty.", nameof(message));
+
+            if(string.IsNullOrEmpty(channelId))
+                throw new ArgumentException("Channel ID cannot be null or empty.", nameof(channelId));
 
             if (!_channels.TryGetValue(channelId, out var channel))
-            {
-                Logger.Warn($"[ChatCore] {player.Nickname}({player.UserId}) attempted to send message to unregistered channel '{channelId}'");
-                return false;
-            }
+                throw new InvalidOperationException($"Channel with id '{channelId}' is not registered.");
 
-            var chatMessage = new ChatMessage(sender, message);
+            var chatMessage = new ChatMessage(senderNickname, senderUserId, message);
             var chatContext = new ChatContext(channelId, chatMessage);
             
             foreach (var middleware in _middlewares)
@@ -97,16 +152,39 @@ namespace TextChatMeow.Core
 
                 if (chatContext.IsCancelled)
                 {
-                    Logger.Warn($"[ChatCore] Message from {player.Nickname}({player.UserId}) to channel '{channelId}' was cancelled by middleware '{middleware.GetType().Name}' Reason: {chatContext.CancelReason}");
+                    Logger.Warn($"[ChatCore] Message from {senderNickname}({senderUserId}) to channel '{channelId}' was cancelled by middleware '{middleware.GetType().Name}' Reason: {chatContext.CancelReason}");
                     return false;
                 }
             }
 
             List<ReferenceHub> recipients = channel.GetRecipients(chatContext);
 
-            // TODO : Implement actual message sending logic here
+            foreach(var displayOutput in _outputs)
+            {
+                displayOutput.Send(recipients, chatContext);
+            }
 
             return true;
+        }
+
+        public bool SendMessage(string channelId, string message)
+        {
+            return SendMessage(channelId, message, "Server", string.Empty);
+        }
+
+        public bool SendMessage(ReferenceHub sender, string channelId, string message)
+        {
+            if (sender == null)
+                throw new ArgumentNullException(nameof(sender));
+            var player = Player.Get(sender);
+            var nickname = player.Nickname;
+            var userId = player.UserId;
+            return SendMessage(channelId, message, nickname, userId);
+        }
+
+        public bool SendMessage(string channelId, string message, string pluginName)
+        {
+            return SendMessage(channelId, message, pluginName, string.Empty);
         }
     }
 }
