@@ -1,9 +1,4 @@
 ﻿using LabApi.Features.Wrappers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TextChatMeow.Core.Interface;
 using TextChatMeow.Core.Models;
 
@@ -16,7 +11,7 @@ namespace TextChatMeow.Middlewares
         public void Process(ChatContext chatContext)
         {
             // If sender is not a player, skip processing
-            if (string.IsNullOrEmpty(chatContext.Message.SenderUserId)) 
+            if (string.IsNullOrEmpty(chatContext.Message.SenderUserId))
                 return;
 
             // Get the player

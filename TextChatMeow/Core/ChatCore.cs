@@ -144,7 +144,14 @@ namespace TextChatMeow.Core
             // Process middlewares
             foreach (var middleware in _middlewares)
             {
-                middleware.Process(chatContext);
+                try
+                {
+                    middleware.Process(chatContext);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("An error occurred while processing chat middleware.", ex);
+                }
 
                 if (chatContext.IsCancelled)
                 {
@@ -154,18 +161,41 @@ namespace TextChatMeow.Core
             }
 
             // Check access to the channel
-            if (!channel.HaveAccess(chatContext, out string deniedReason))
+            try
             {
-                cancelReason = deniedReason;
-                return false;
+                if (!channel.HaveAccess(chatContext, out string deniedReason))
+                {
+                    cancelReason = deniedReason;
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while checking channel access.", ex);
             }
 
             // Get recipients and send the message
-            List<ReferenceHub> recipients = channel.GetRecipients(chatContext);
+            List<ReferenceHub> recipients;
+            try
+            {
+                recipients = channel.GetRecipients(chatContext);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving chat message recipients.", ex);
+            }
 
+            // Send to outputs
             foreach (var displayOutput in _outputs)
             {
-                displayOutput.Send(recipients, chatContext);
+                try
+                {
+                    displayOutput.Send(recipients, chatContext);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("An error occurred while sending chat message to output.", ex);
+                }
             }
 
             cancelReason = string.Empty;
@@ -183,6 +213,11 @@ namespace TextChatMeow.Core
                 throw new ArgumentNullException(nameof(sender));
 
             var player = Player.Get(sender);
+            if (player == null)
+            {
+                throw new InvalidOperationException("Player not found for the given ReferenceHub.");
+            }
+
             var nickname = player.Nickname;
             var userId = player.UserId;
             return SendMessage(channelId, message, nickname, userId, out cancelReason);

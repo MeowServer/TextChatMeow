@@ -1,4 +1,5 @@
 ﻿using CommandSystem;
+using LabApi.Features.Console;
 using LabApi.Features.Wrappers;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,9 @@ namespace TextChatMeow.Command
                 messageParts = messageParts.Skip(1);
             }
 
+            // Normalize channel ID to lowercase
+            channelId = channelId.ToLower();
+
             // Combine message parts into a single string
             string content = string.Join(" ", messageParts);
 
@@ -67,8 +71,10 @@ namespace TextChatMeow.Command
                 cancelReason = ex.Message;
                 isSuccess = false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Error("An error occured while executing Chat command: \n" + ex);
+
                 cancelReason = "An unexpected error occurred while sending the message.";
                 isSuccess = false;
             }

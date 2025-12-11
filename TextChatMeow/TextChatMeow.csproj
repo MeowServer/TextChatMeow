@@ -33,7 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Channels\ProximityChannel.cs" />
     <Compile Include="Channels\PublicChannel.cs" />
+    <Compile Include="Channels\TeamChannel.cs" />
     <Compile Include="Command\Chat.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Core\ChatCore.cs" />
