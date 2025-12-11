@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Command\Chat.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Core\ChatCore.cs" />
     <Compile Include="Core\Interface\IChannel.cs" />

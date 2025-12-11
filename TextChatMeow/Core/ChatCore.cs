@@ -131,8 +131,9 @@ namespace TextChatMeow.Core
         /// <param name="message">The content of the chat message to send.</param>
         /// <param name="senderNickname">The display name of the player, plugin, or server sending the message. </param>
         /// <param name="senderUserId">The unique identifier of the player sending the message. If this is sent by plugin or server, this value should be empty string.</param>
+        /// <param name="cancelReason">If the message could not be sent, contains a description of the reason; otherwise, empty string.</param>
         /// <returns>true if the message was successfully delivered to the channel; otherwise, false.</returns>
-        internal bool SendMessage(string channelId, string message, string senderNickname, string senderUserId)
+        internal bool SendMessage(string channelId, string message, string senderNickname, string senderUserId, out string cancelReason)
         {
             if(string.IsNullOrEmpty(message))
                 throw new ArgumentException("Message content cannot be null or empty.", nameof(message));
@@ -152,7 +153,7 @@ namespace TextChatMeow.Core
 
                 if (chatContext.IsCancelled)
                 {
-                    Logger.Warn($"[ChatCore] Message from {senderNickname}({senderUserId}) to channel '{channelId}' was cancelled by middleware '{middleware.GetType().Name}' Reason: {chatContext.CancelReason}");
+                    cancelReason = chatContext.CancelReason;
                     return false;
                 }
             }
@@ -164,27 +165,29 @@ namespace TextChatMeow.Core
                 displayOutput.Send(recipients, chatContext);
             }
 
+            cancelReason = string.Empty;
             return true;
         }
 
-        public bool SendMessage(string channelId, string message)
+        public bool SendMessage(string channelId, string message, out string cancelReason)
         {
-            return SendMessage(channelId, message, "Server", string.Empty);
+            return SendMessage(channelId, message, "Server", string.Empty, out cancelReason);
         }
 
-        public bool SendMessage(ReferenceHub sender, string channelId, string message)
+        public bool SendMessage(ReferenceHub sender, string channelId, string message, out string cancelReason)
         {
-            if (sender == null)
+            if (sender is null)
                 throw new ArgumentNullException(nameof(sender));
+
             var player = Player.Get(sender);
             var nickname = player.Nickname;
             var userId = player.UserId;
-            return SendMessage(channelId, message, nickname, userId);
+            return SendMessage(channelId, message, nickname, userId, out cancelReason);
         }
 
-        public bool SendMessage(string channelId, string message, string pluginName)
+        public bool SendMessage(string channelId, string message, string pluginName, out string cancelReason)
         {
-            return SendMessage(channelId, message, pluginName, string.Empty);
+            return SendMessage(channelId, message, pluginName, string.Empty, out cancelReason);
         }
     }
 }
