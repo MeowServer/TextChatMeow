@@ -146,7 +146,8 @@ namespace TextChatMeow.Core
 
             var chatMessage = new ChatMessage(senderNickname, senderUserId, message);
             var chatContext = new ChatContext(channelId, chatMessage);
-            
+
+            // Process middlewares
             foreach (var middleware in _middlewares)
             {
                 middleware.Process(chatContext);
@@ -158,6 +159,14 @@ namespace TextChatMeow.Core
                 }
             }
 
+            // Check access to the channel
+            if (!channel.HaveAccess(chatContext, out string deniedReason))
+            {
+                cancelReason = deniedReason;
+                return false;
+            }
+
+            // Get recipients and send the message
             List<ReferenceHub> recipients = channel.GetRecipients(chatContext);
 
             foreach(var displayOutput in _outputs)

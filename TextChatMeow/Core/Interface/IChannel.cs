@@ -26,5 +26,12 @@ namespace TextChatMeow.Core.Interface
         /// <returns>A list of <see cref="ReferenceHub"/> objects representing the recipients of the message. The list is empty
         /// if there are no recipients.</returns>
         public List<ReferenceHub> GetRecipients(ChatContext message);
+
+        /// <summary>
+        /// Determines whether the specified chat message can access to this channel.
+        /// </summary>
+        /// <param name="message">The chat context containing information about the message to be delivered. Cannot be null.</param>
+        /// <returns><c>true</c> if the message has access to this channel; otherwise, <c>false</c>.</returns>
+        public bool HaveAccess(ChatContext message, out string deniedReason);
     }
 }
