@@ -40,10 +40,10 @@ namespace TextChatMeow
         public override string Name { get; } = "TextChatMeow";
 
         // The description of the plugin
-        public override string Description { get; } = "";
+        public override string Description { get; } = "A customizable text chat plugin based on HintServiceMeow(HSM)";
 
         // The author of the plugin
-        public override string Author { get; } = "MeowServerOwner";
+        public override string Author { get; } = "MeowServer";
 
         // The current version of the plugin
         public override Version Version { get; } = new Version(1, 0, 0, 0);
@@ -53,10 +53,12 @@ namespace TextChatMeow
 
         public override void Enable()
         {
+            Instance = this;
         }
 
         public override void Disable()
         {
+            Instance = null;
         }
     }
 }
