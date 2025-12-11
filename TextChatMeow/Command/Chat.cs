@@ -36,7 +36,7 @@ namespace TextChatMeow.Command
             {
                 if (firstArg.Length == 1)
                 {
-                    response = "Invalid channel format. Example: .c @world Hello";
+                    response = "Invalid channel format. Example: .c @public";
                     return false;
                 }
 
@@ -74,7 +74,7 @@ namespace TextChatMeow.Command
             catch (Exception ex)
             {
                 Logger.Error("An error occured while executing Chat command: \n" + ex);
-
+                
                 cancelReason = "An unexpected error occurred while sending the message.";
                 isSuccess = false;
             }

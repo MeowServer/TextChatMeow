@@ -39,7 +39,7 @@ namespace TextChatMeow.Channels
             catch(Exception ex)
             {
                 var correlationId = Guid.NewGuid().ToString();
-                Logger.Error($"ProximityChannel:GetRecipients failed (CorrelationId: {correlationId}) - {ex}");
+                Logger.Error($"ProximityChannel:GetRecipients failed (MessageId: {messageContext?.Message?.Guid}) - {ex}");
                 return new List<ReferenceHub>();
             }
         }
