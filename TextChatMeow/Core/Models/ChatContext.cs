@@ -33,6 +33,12 @@ namespace TextChatMeow.Core.Models
 
         internal ChatContext(string channelId, ChatMessage message)
         {
+            if(channelId is null)
+                throw new ArgumentNullException(nameof(channelId));
+
+            if(message is null)
+                throw new ArgumentNullException(nameof(message));
+
             ChannelId = channelId;
             Message = message;
         }
@@ -46,6 +52,9 @@ namespace TextChatMeow.Core.Models
         /// displayed to users or logged. Cannot be null.</param>
         public void Cancel(string reason)
         {
+            if(reason is null)
+                throw new ArgumentNullException(nameof(reason));
+
             IsCancelled = true;
             CancelReason = reason;
         }

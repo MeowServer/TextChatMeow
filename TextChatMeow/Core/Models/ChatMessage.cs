@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabApi.Features.Wrappers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,9 +39,9 @@ namespace TextChatMeow.Core.Models
         public string DisplayContent { get; set; }
 
         /// <summary>
-        /// Gets the date and time at which the message was created.
+        /// Gets the UTC timestamp indicating when the message was created.
         /// </summary>
-        public DateTime Timestamp { get; } = DateTime.Now;
+        public DateTime TimestampUtc { get; } = DateTime.UtcNow;
 
         /// <summary>
         /// Gets or sets a collection of key-value pairs that store additional metadata associated with the object.
@@ -53,8 +54,32 @@ namespace TextChatMeow.Core.Models
 
         public ChatMessage(string senderNickname, string senderUserId, string rawContent)
         {
-            SenderDisplayedName = senderNickname;
+            if (senderNickname is null)
+                throw new ArgumentNullException(nameof(senderNickname));
+
+            if (senderUserId is null)
+                throw new ArgumentNullException(nameof(senderUserId));
+
+            if (rawContent is null)
+                throw new ArgumentNullException(nameof(rawContent));
+
+                SenderDisplayedName = senderNickname;
             SenderUserId = senderUserId;
+            RawContent = rawContent;
+            DisplayContent = rawContent; // Default to raw content
+        }
+
+        public ChatMessage(ReferenceHub sender, string rawContent)
+        {
+            if (sender is null)
+                throw new ArgumentNullException(nameof(sender));
+
+            if (rawContent is null)
+                throw new ArgumentNullException(nameof(rawContent));
+
+            var player = Player.Get(sender);
+            SenderDisplayedName = player.Nickname;
+            SenderUserId = player.UserId;
             RawContent = rawContent;
             DisplayContent = rawContent; // Default to raw content
         }
