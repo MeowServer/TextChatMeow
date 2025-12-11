@@ -6,7 +6,7 @@ namespace TextChatMeow.Core.Interface
     public interface IChannel
     {
         /// <summary>
-        /// Gets the unique identifier for this instance.
+        /// Gets the unique identifier for this instance. Should be lowercase.
         /// </summary>
         public string Id { get; }
 
