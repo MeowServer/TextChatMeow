@@ -44,6 +44,7 @@
     <Compile Include="Middlewares\FrequencyLimitMiddleware.cs" />
     <Compile Include="Middlewares\IllegalTagRemovalMiddleware.cs" />
     <Compile Include="Middlewares\LogMiddleware.cs" />
+    <Compile Include="Middlewares\MuteMiddleware.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
