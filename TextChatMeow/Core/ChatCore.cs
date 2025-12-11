@@ -1,13 +1,7 @@
-﻿using GameCore;
-using LabApi.Features.Console;
-using LabApi.Features.Wrappers;
-using Mirror;
+﻿using LabApi.Features.Wrappers;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TextChatMeow.Core.Interface;
 using TextChatMeow.Core.Models;
 
@@ -135,10 +129,10 @@ namespace TextChatMeow.Core
         /// <returns>true if the message was successfully delivered to the channel; otherwise, false.</returns>
         internal bool SendMessage(string channelId, string message, string senderNickname, string senderUserId, out string cancelReason)
         {
-            if(string.IsNullOrEmpty(message))
+            if (string.IsNullOrEmpty(message))
                 throw new ArgumentException("Message content cannot be null or empty.", nameof(message));
 
-            if(string.IsNullOrEmpty(channelId))
+            if (string.IsNullOrEmpty(channelId))
                 throw new ArgumentException("Channel ID cannot be null or empty.", nameof(channelId));
 
             if (!_channels.TryGetValue(channelId, out var channel))
@@ -169,7 +163,7 @@ namespace TextChatMeow.Core
             // Get recipients and send the message
             List<ReferenceHub> recipients = channel.GetRecipients(chatContext);
 
-            foreach(var displayOutput in _outputs)
+            foreach (var displayOutput in _outputs)
             {
                 displayOutput.Send(recipients, chatContext);
             }

@@ -1,9 +1,6 @@
 ﻿using LabApi.Features.Wrappers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TextChatMeow.Core.Models
 {
@@ -63,7 +60,7 @@ namespace TextChatMeow.Core.Models
             if (rawContent is null)
                 throw new ArgumentNullException(nameof(rawContent));
 
-                SenderDisplayedName = senderNickname;
+            SenderDisplayedName = senderNickname;
             SenderUserId = senderUserId;
             RawContent = rawContent;
             DisplayContent = rawContent; // Default to raw content

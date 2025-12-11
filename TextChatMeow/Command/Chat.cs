@@ -62,7 +62,8 @@ namespace TextChatMeow.Command
             {
                 isSuccess = ChatCore.Instance.SendMessage(player.ReferenceHub, channelId, content, out cancelReason);
             }
-            catch (InvalidOperationException ex){
+            catch (InvalidOperationException ex)
+            {
                 cancelReason = ex.Message;
                 isSuccess = false;
             }

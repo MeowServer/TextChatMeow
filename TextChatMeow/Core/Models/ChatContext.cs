@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TextChatMeow.Core.Models
 {
@@ -33,10 +29,10 @@ namespace TextChatMeow.Core.Models
 
         internal ChatContext(string channelId, ChatMessage message)
         {
-            if(channelId is null)
+            if (channelId is null)
                 throw new ArgumentNullException(nameof(channelId));
 
-            if(message is null)
+            if (message is null)
                 throw new ArgumentNullException(nameof(message));
 
             ChannelId = channelId;
@@ -52,7 +48,7 @@ namespace TextChatMeow.Core.Models
         /// displayed to users or logged. Cannot be null.</param>
         public void Cancel(string reason)
         {
-            if(reason is null)
+            if (reason is null)
                 throw new ArgumentNullException(nameof(reason));
 
             IsCancelled = true;
