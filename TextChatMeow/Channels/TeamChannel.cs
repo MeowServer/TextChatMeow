@@ -31,7 +31,7 @@ namespace TextChatMeow.Channels
 
                 return recipients;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.Error($"ProximityChannel:GetRecipients failed (MessageId: {messageContext?.Message?.Guid}) - {ex}");
                 return new List<ReferenceHub>();

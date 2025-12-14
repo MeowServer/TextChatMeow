@@ -2,9 +2,6 @@
 using LabApi.Features.Wrappers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TextChatMeow.Core.Interface;
 using TextChatMeow.Core.Models;
 
@@ -36,7 +33,7 @@ namespace TextChatMeow.Channels
 
                 return recipients;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var correlationId = Guid.NewGuid().ToString();
                 Logger.Error($"ProximityChannel:GetRecipients failed (MessageId: {messageContext?.Message?.Guid}) - {ex}");

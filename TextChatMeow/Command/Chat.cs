@@ -74,7 +74,7 @@ namespace TextChatMeow.Command
             catch (Exception ex)
             {
                 Logger.Error("An error occured while executing Chat command: \n" + ex);
-                
+
                 cancelReason = "An unexpected error occurred while sending the message.";
                 isSuccess = false;
             }
