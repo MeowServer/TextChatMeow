@@ -1,9 +1,10 @@
-﻿using CommandSystem;
-using LabApi.Features.Console;
-using LabApi.Features.Wrappers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CommandSystem;
+using LabApi.Features.Console;
+using LabApi.Features.Wrappers;
+using TextChatMeow.Config.Model;
 using TextChatMeow.Core;
 
 namespace TextChatMeow.Command
@@ -11,23 +12,25 @@ namespace TextChatMeow.Command
     [CommandHandler(typeof(ClientCommandHandler))]
     internal class Chat : ICommand
     {
-        public string Command => "Chat";
+        private ChatCommandConfig Config => TextChatPlugin.Instance.Config.Command;
 
-        public string[] Aliases { get; } = new[] { "C", "c" };
+        public string Command => Config.Command;
 
-        public string Description => "Send a chat message. Usage: .c <Message> or .c [@Channel] <Message>";
+        public string[] Aliases => Config.CommandAliases;
+
+        public string Description => Config.Description;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             // Check if sender is a player
             if (arguments.Count == 0)
             {
-                response = "Usage: .c [@ChannelName] <Message>";
+                response = Config.ReponseWrongFormat;
                 return false;
             }
 
             // Set default channel ID to "public" and extract message content
-            string channelId = "public";
+            string channelId = Config.DefaultChannelId;
             IEnumerable<string> messageParts = arguments;
 
             // Extract channel ID if specified
@@ -36,7 +39,7 @@ namespace TextChatMeow.Command
             {
                 if (firstArg.Length == 1)
                 {
-                    response = "Invalid channel format. Example: .c @public";
+                    response = Config.ResponseWrongChannelFormat;
                     return false;
                 }
 
@@ -45,7 +48,7 @@ namespace TextChatMeow.Command
                 // Ensure there is message content after the channel ID
                 if (arguments.Count < 2)
                 {
-                    response = "Please enter a message content.";
+                    response = Config.ResponseNoMessage;
                     return false;
                 }
 
@@ -75,18 +78,18 @@ namespace TextChatMeow.Command
             {
                 Logger.Error("An error occured while executing Chat command: \n" + ex);
 
-                cancelReason = "An unexpected error occurred while sending the message.";
+                cancelReason = Config.ResponseUnknownError;
                 isSuccess = false;
             }
 
             if (isSuccess)
             {
-                response = "Message sent.";
+                response = Config.ResponseSuccess;
                 return true;
             }
             else
             {
-                response = $"Failed to send message. Reason: {cancelReason}";
+                response = Config.ResponseFailedToSend + cancelReason;
                 return false;
             }
         }
