@@ -3,6 +3,7 @@ using LabApi.Features.Console;
 using LabApi.Features.Wrappers;
 using System;
 using System.Collections.Generic;
+using TextChatMeow.Config.Model;
 using TextChatMeow.Core.Interface;
 using TextChatMeow.Core.Models;
 
@@ -10,8 +11,9 @@ namespace TextChatMeow.Channels
 {
     public class TeamChannel : IChannel
     {
-        public string Id { get; } = "team";
-        public string Name { get; } = "Team Channel";
+        public TeamChannelConfig Config => TextChatPlugin.Instance.Config.TeamChannel;
+        public string Id => Config.Id;
+        public string Name => Config.Name;
 
         public List<ReferenceHub> GetRecipients(ChatContext messageContext)
         {

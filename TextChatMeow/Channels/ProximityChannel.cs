@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using LabApi.Features.Console;
 using LabApi.Features.Wrappers;
+using TextChatMeow.Config.Model;
 using TextChatMeow.Core.Interface;
 using TextChatMeow.Core.Models;
 
 namespace TextChatMeow.Channels
 {
-    public class ProximityChannel : IChannel
+    internal class ProximityChannel : IChannel
     {
-        public string Id { get; } = "proximity";
-        public string Name { get; } = "Proximity Channel";
+        private ProximityChannelConfig Config => TextChatPlugin.Instance.Config.ProximityChannel;
+        public string Id => Config.Id;
+        public string Name => Config.Name;
 
-        private float _maxDistance = 10f;
+        private float _maxDistance => Config.MaxDistance;
 
         public List<ReferenceHub> GetRecipients(ChatContext messageContext)
         {

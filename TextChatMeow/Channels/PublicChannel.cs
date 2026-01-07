@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TextChatMeow.Config.Model;
 using TextChatMeow.Core.Interface;
 using TextChatMeow.Core.Models;
 
 namespace TextChatMeow.Channels
 {
-    public class PublicChannel : IChannel
+    internal class PublicChannel : IChannel
     {
-        public string Id { get; } = "public";
-        public string Name { get; } = "Public Channel";
+        public PublicChannelConfig Config => TextChatPlugin.Instance.Config.PublicChannel;
+        public string Id => Config.Id;
+        public string Name => Config.Name;
 
         public List<ReferenceHub> GetRecipients(ChatContext message)
         {
