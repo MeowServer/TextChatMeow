@@ -37,7 +37,7 @@ namespace TextChatMeow.Core
 
             _middlewares.Add(middleware);
 
-            _middlewares = _middlewares.OrderBy(m => m.Priority).ToList();
+            _middlewares.Sort((x, y) => x.Priority - y.Priority);
         }
 
         /// <summary>
@@ -142,7 +142,8 @@ namespace TextChatMeow.Core
             var chatContext = new ChatContext(channelId, chatMessage);
 
             // Process middlewares
-            foreach (var middleware in _middlewares)
+            var middlewaresCopy = _middlewares.ToArray();
+            foreach (var middleware in middlewaresCopy)
             {
                 try
                 {
@@ -186,7 +187,8 @@ namespace TextChatMeow.Core
             }
 
             // Send to outputs
-            foreach (var displayOutput in _outputs)
+            var displayOutputsCopy = _outputs.ToArray();
+            foreach (var displayOutput in displayOutputsCopy)
             {
                 try
                 {
@@ -226,6 +228,10 @@ namespace TextChatMeow.Core
         public bool SendMessage(string channelId, string message, string pluginName, out string cancelReason)
         {
             return SendMessage(channelId, message, pluginName, string.Empty, out cancelReason);
+        }
+
+        private ChatCore()
+        {
         }
     }
 }
