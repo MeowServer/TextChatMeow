@@ -32,7 +32,7 @@ namespace TextChatMeow.Core
         /// <exception cref="InvalidOperationException">Thrown if a middleware of the same type is already registered.</exception>
         public void RegisterMiddleware(IMiddleware middleware)
         {
-            if (_middlewares.Contains(middleware))
+            if (_middlewares.Any(x => x.GetType() == middleware.GetType()))
                 throw new InvalidOperationException($"Middleware of type '{middleware.GetType().Name}' is already registered.");
 
             _middlewares.Add(middleware);
@@ -150,7 +150,7 @@ namespace TextChatMeow.Core
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("An error occurred while processing chat middleware.", ex);
+                    throw new Exception($"An error occurred while processing chat middleware {middleware.Name}.", ex);
                 }
 
                 if (chatContext.IsCancelled)
@@ -171,7 +171,7 @@ namespace TextChatMeow.Core
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while checking channel access.", ex);
+                throw new Exception($"An error occurred while checking access of channel {channel.Name}.", ex);
             }
 
             // Get recipients and send the message
@@ -182,7 +182,7 @@ namespace TextChatMeow.Core
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while retrieving chat message recipients.", ex);
+                throw new Exception($"An error occurred while retrieving chat message recipients of channel {channel.Name}.", ex);
             }
 
             // Send to outputs
@@ -194,7 +194,7 @@ namespace TextChatMeow.Core
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("An error occurred while sending chat message to output.", ex);
+                    throw new Exception($"An error occurred while sending chat message to output {displayOutput.Name}.", ex);
                 }
             }
 

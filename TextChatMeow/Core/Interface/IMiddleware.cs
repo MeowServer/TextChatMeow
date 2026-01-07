@@ -5,6 +5,11 @@ namespace TextChatMeow.Core.Interface
     public interface IMiddleware
     {
         /// <summary>
+        /// Gets the name associated with this middleware.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
         /// Gets the priority level associated with the current instance. The lower the value, the higher the priority.
         /// </summary>
         public int Priority { get; }

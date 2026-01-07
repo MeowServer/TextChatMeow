@@ -7,6 +7,8 @@ namespace TextChatMeow.Middlewares
 {
     public class FrequencyLimitMiddleware : IMiddleware
     {
+        public string Name => "FrequencyLimitMiddleware";
+
         public int Priority { get; } = 1;
 
         private Dictionary<string, List<DateTime>> _userMessageTimestamps = new Dictionary<string, List<DateTime>>();

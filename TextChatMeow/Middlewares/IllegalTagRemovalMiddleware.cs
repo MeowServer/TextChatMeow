@@ -6,6 +6,8 @@ namespace TextChatMeow.Middlewares
 {
     public class IllegalTagRemovalMiddleware : IMiddleware
     {
+        public string Name => "IllegalTagRemovalMiddleware";
+
         public int Priority { get; } = 1;
 
         private static readonly Regex RichTextTagRegex = new Regex(

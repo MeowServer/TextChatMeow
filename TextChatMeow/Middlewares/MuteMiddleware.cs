@@ -6,6 +6,8 @@ namespace TextChatMeow.Middlewares
 {
     public class MuteMiddleware : IMiddleware
     {
+        public string Name => "MuteMiddleware";
+
         public int Priority { get; } = 1;
 
         public void Process(ChatContext chatContext)
