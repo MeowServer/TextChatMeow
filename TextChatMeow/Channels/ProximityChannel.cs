@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using LabApi.Features.Console;
 using LabApi.Features.Wrappers;
 using TextChatMeow.Config.Model;
+using TextChatMeow.Config.Model.Channel;
 using TextChatMeow.Core.Interface;
 using TextChatMeow.Core.Models;
 

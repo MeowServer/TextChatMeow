@@ -39,9 +39,13 @@
     <Compile Include="Command\Chat.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\Model\ChatCommandConfig.cs" />
-    <Compile Include="Config\Model\ProximityChannelConfig.cs" />
-    <Compile Include="Config\Model\PublicChannelConfig.cs" />
-    <Compile Include="Config\Model\TeamChannelConfig.cs" />
+    <Compile Include="Config\Model\Middlewares\FrequencyLimitMiddlewareConfig.cs" />
+    <Compile Include="Config\Model\Middlewares\IllegalTagRemovalMiddlewareConfig.cs" />
+    <Compile Include="Config\Model\Middlewares\LogMiddlewareConfig.cs" />
+    <Compile Include="Config\Model\Middlewares\MuteMiddlewareConfig.cs" />
+    <Compile Include="Config\Model\Channel\ProximityChannelConfig.cs" />
+    <Compile Include="Config\Model\Channel\PublicChannelConfig.cs" />
+    <Compile Include="Config\Model\Channel\TeamChannelConfig.cs" />
     <Compile Include="Core\ChatCore.cs" />
     <Compile Include="Core\Interface\IChannel.cs" />
     <Compile Include="Core\Interface\IChatOutput.cs" />
