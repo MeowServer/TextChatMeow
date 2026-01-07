@@ -1,6 +1,6 @@
-﻿using System;
-using LabApi.Features;
+﻿using LabApi.Features;
 using LabApi.Loader.Features.Plugins;
+using System;
 
 //  V1.2.0
 //      fixing bugs

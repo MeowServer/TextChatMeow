@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TextChatMeow.Config.Model;
 using TextChatMeow.Config.Model.Channel;
 using TextChatMeow.Core.Interface;
 using TextChatMeow.Core.Models;

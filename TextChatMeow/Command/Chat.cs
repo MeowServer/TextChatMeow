@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CommandSystem;
+﻿using CommandSystem;
 using LabApi.Features.Console;
 using LabApi.Features.Wrappers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TextChatMeow.Config.Model;
 using TextChatMeow.Core;
 

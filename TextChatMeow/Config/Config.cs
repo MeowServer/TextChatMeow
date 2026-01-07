@@ -1,8 +1,6 @@
-﻿using TextChatMeow.Channels;
-using TextChatMeow.Config.Model;
+﻿using TextChatMeow.Config.Model;
 using TextChatMeow.Config.Model.Channel;
 using TextChatMeow.Config.Model.Middlewares;
-using TextChatMeow.Middlewares;
 
 namespace TextChatMeow.Config
 {
