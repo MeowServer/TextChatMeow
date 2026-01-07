@@ -37,7 +37,8 @@
     <Compile Include="Channels\PublicChannel.cs" />
     <Compile Include="Channels\TeamChannel.cs" />
     <Compile Include="Command\Chat.cs" />
-    <Compile Include="Config.cs" />
+    <Compile Include="Config\Config.cs" />
+    <Compile Include="Config\Model\ChatCommandConfig.cs" />
     <Compile Include="Core\ChatCore.cs" />
     <Compile Include="Core\Interface\IChannel.cs" />
     <Compile Include="Core\Interface\IChatOutput.cs" />
@@ -49,37 +50,34 @@
     <Compile Include="Middlewares\LogMiddleware.cs" />
     <Compile Include="Middlewares\MuteMiddleware.cs" />
     <Compile Include="Plugin.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Dependencies\LabAPI\Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp-publicized">
+      <HintPath>..\..\Dependencies\14.1.0\Assembly-CSharp-publicized.dll</HintPath>
     </Reference>
     <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Dependencies\LabAPI\CommandSystem.Core.dll</HintPath>
+      <HintPath>..\..\Dependencies\14.1.0\CommandSystem.Core.dll</HintPath>
     </Reference>
     <Reference Include="LabApi, Version=1.1.4.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\packages\Northwood.LabAPI.1.1.4\lib\net48\LabApi.dll</HintPath>
     </Reference>
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Dependencies\LabAPI\Mirror.dll</HintPath>
+      <HintPath>..\..\Dependencies\14.1.0\Mirror.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Dependencies\LabAPI\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="YamlDotNet, Version=16.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <HintPath>..\packages\YamlDotNet.16.3.0\lib\net47\YamlDotNet.dll</HintPath>
+      <HintPath>..\..\Dependencies\14.1.0\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
